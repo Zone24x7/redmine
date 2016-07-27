@@ -50,10 +50,12 @@ class Mailer < ActionMailer::Base
     @author = issue.author
     @issue = issue
     @users = to_users + cc_users
+    # get project code
+    project_code = getProjectCode(issue.project.id)
     @issue_url = url_for(:controller => 'issues', :action => 'show', :id => issue)
     mail :to => to_users,
       :cc => cc_users,
-      :subject => "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}] (#{issue.status.name}) #{issue.subject}"
+      :subject => "[[#{project_code}] - #{issue.tracker.name} ##{issue.id}] #{issue.subject}"
   end
 
   # Notifies users about a new issue
@@ -75,9 +77,9 @@ class Mailer < ActionMailer::Base
     message_id journal
     references issue
     @author = journal.user
-    s = "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}] "
-    s << "(#{issue.status.name}) " if journal.new_value_for('status_id')
-    s << issue.subject
+    #get project code
+    project_code = getProjectCode(issue.project.id)
+    s = "[[#{project_code}] - #{issue.tracker.name} ##{issue.id}] #{issue.subject}"
     @issue = issue
     @users = to_users + cc_users
     @journal = journal
@@ -582,4 +584,17 @@ class Mailer < ActionMailer::Base
   def mylogger
     Rails.logger
   end
+
+  # getProjectCode method to get project code of project
+  def getProjectCode(projectId)
+    project_code=nil
+    query =  "select cv.value from projects as p,custom_fields as cf ,custom_values as cv where  p.id = cv.customized_id and cf.id = cv.custom_field_id and cv.customized_type='Project' and cf.name='Project Code' and p.id=#{projectId}"
+    query_result = ActiveRecord::Base.connection.execute(query)
+    ActiveRecord::Base.connection.close
+    query_result.each do |row|
+      project_code = row[0]
+    end
+    project_code
+  end
+
 end
