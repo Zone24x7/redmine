@@ -1,5 +1,6 @@
 class CheckRole
 
+  #check if any project has software- engineer external role
   def check_external_user (projectlist)
     @restult=false
     projectlist.each do |projectitem|
