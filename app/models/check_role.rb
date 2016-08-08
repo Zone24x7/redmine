@@ -12,4 +12,14 @@ class CheckRole
     end
     return @restult
   end
+
+  #check if the given project has a software engineer -external role
+  def iscurrent_user_external_user (projectitem)
+    if User.current.roles_for_project(projectitem).include?Role.find_by_id(27)
+      return true
+    else
+      return false
+    end
+  end
+
 end
