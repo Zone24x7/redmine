@@ -1,4 +1,5 @@
 <h2><%= l(:label_home) %></h2>
+<% userrole =CheckRole.new %>
 <div class="splitcontentleft">
     <div class="wiki">
         <%= textilizable Setting.welcome_text %>
@@ -7,7 +8,7 @@
 </div>
 
 <div class="splitcontentright">
-    <%if !(User.current.roles_for_project(@project).include?Role.find_by_id(27))%>
+    <%if !(userrole.check_external_user(@projects))%>
         <% if @news.any? %>
             <div class="news box">
                 <h3><%=l(:label_news_latest)%></h3>
