@@ -41,6 +41,10 @@ class Mailer < ActionMailer::Base
 
   # Builds a mail for notifying to_users and cc_users about a new issue
   def issue_add(issue, to_users, cc_users)
+    #change mail subject if the project role is software engineer- external role
+    externaluser=ExternalUser.new
+    issue.project.name= externaluser.getexternaluser_project_name(issue.project)
+
     redmine_headers 'Project' => issue.project.identifier,
                     'Issue-Id' => issue.id,
                     'Issue-Author' => issue.author.login
@@ -68,6 +72,10 @@ class Mailer < ActionMailer::Base
   # Builds a mail for notifying to_users and cc_users about an issue update
   def issue_edit(journal, to_users, cc_users)
     issue = journal.journalized
+
+    #change mail subject if the project role is software engineer- external role
+    externaluser=ExternalUser.new
+    issue.project.name= externaluser.getexternaluser_project_name(issue.project)
     redmine_headers 'Project' => issue.project.identifier,
                     'Issue-Id' => issue.id,
                     'Issue-Author' => issue.author.login
@@ -117,6 +125,10 @@ class Mailer < ActionMailer::Base
   #   document_added(document) => Mail::Message object
   #   Mailer.document_added(document).deliver => sends an email to the document's project recipients
   def document_added(document)
+
+    #change mail subject if the project role is software engineer- external role
+    externaluser=ExternalUser.new
+    document.project.name= externaluser.getexternaluser_project_name(document.project)
     redmine_headers 'Project' => document.project.identifier
     @author = User.current
     @document = document
@@ -149,6 +161,11 @@ class Mailer < ActionMailer::Base
       added_to = "#{l(:label_document)}: #{container.title}"
       recipients = container.notified_users
     end
+
+    #change mail subject if the project role is software engineer- external role
+    externaluser=ExternalUser.new
+    container.project.name= externaluser.getexternaluser_project_name(container.project)
+
     redmine_headers 'Project' => container.project.identifier
     @attachments = attachments
     @added_to = added_to
@@ -163,6 +180,11 @@ class Mailer < ActionMailer::Base
   #   news_added(news) => Mail::Message object
   #   Mailer.news_added(news).deliver => sends an email to the news' project recipients
   def news_added(news)
+
+    #change mail subject if the project role is software engineer- external role
+    externaluser=ExternalUser.new
+    news.project.name= externaluser.getexternaluser_project_name(news.project)
+
     redmine_headers 'Project' => news.project.identifier
     @author = news.author
     message_id news
@@ -181,6 +203,11 @@ class Mailer < ActionMailer::Base
   #   Mailer.news_comment_added(comment) => sends an email to the news' project recipients
   def news_comment_added(comment)
     news = comment.commented
+
+    #change mail subject if the project role is software engineer- external role
+    externaluser=ExternalUser.new
+    news.project.name= externaluser.getexternaluser_project_name(news.project)
+
     redmine_headers 'Project' => news.project.identifier
     @author = comment.author
     message_id comment
@@ -199,6 +226,11 @@ class Mailer < ActionMailer::Base
   #   message_posted(message) => Mail::Message object
   #   Mailer.message_posted(message).deliver => sends an email to the recipients
   def message_posted(message)
+
+    #change mail subject if the project role is software engineer- external role
+    externaluser=ExternalUser.new
+    message.board.project.name= externaluser.getexternaluser_project_name(message.project)
+
     redmine_headers 'Project' => message.project.identifier,
                     'Topic-Id' => (message.parent_id || message.id)
     @author = message.author
@@ -219,6 +251,11 @@ class Mailer < ActionMailer::Base
   #   wiki_content_added(wiki_content) => Mail::Message object
   #   Mailer.wiki_content_added(wiki_content).deliver => sends an email to the project's recipients
   def wiki_content_added(wiki_content)
+
+    #change mail subject if the project role is software engineer- external role
+    externaluser=ExternalUser.new
+    wiki_content.project.name= externaluser.getexternaluser_project_name(wiki_content.project)
+
     redmine_headers 'Project' => wiki_content.project.identifier,
                     'Wiki-Page-Id' => wiki_content.page.id
     @author = wiki_content.author
@@ -240,6 +277,11 @@ class Mailer < ActionMailer::Base
   #   wiki_content_updated(wiki_content) => Mail::Message object
   #   Mailer.wiki_content_updated(wiki_content).deliver => sends an email to the project's recipients
   def wiki_content_updated(wiki_content)
+
+    #change mail subject if the project role is software engineer- external role
+    externaluser=ExternalUser.new
+    wiki_content.project.name= externaluser.getexternaluser_project_name(wiki_content.project)
+
     redmine_headers 'Project' => wiki_content.project.identifier,
                     'Wiki-Page-Id' => wiki_content.page.id
     @author = wiki_content.author
