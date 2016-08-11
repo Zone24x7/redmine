@@ -25,6 +25,7 @@
   <p style="color:orange"><input id="cbOrange" name="accept" type="radio" value="2" onclick="loadColors(this)" /> 	Task is in line with your job description and project role.<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspYou believe that you are NOT adding value to YOU, but adding value for Zone24x7 and/or our client(s) by you performing this task.</p>
   <p style="color:#FFCC00"><input id="cbYellow" name="accept" type="radio" value="3" onclick="loadColors(this)" /> 	Task is NOT in line with your job description and project role.<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspYou believe that you are NOT adding value to YOU, but adding value for Zone24x7 and/or our client(s) by you performing this task. </p>
   <p style="color:red"><input id="cbRed" name="accept" type="radio" value="4" onclick="loadColors(this)"/>  Task is NOT in line with your job description and project role.<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspYou believe that you are not adding value.</p>
+  <p style="color:#505050"><input id="cbBlack" name="accept" type="radio" value="5" onclick="loadColors(this)"/> Cannot decide.</p>
   <% @time_entry.custom_field_values.each do |value| %>
     <p><%= custom_field_tag_with_label :time_entry, value %></p>
   <% end %>
