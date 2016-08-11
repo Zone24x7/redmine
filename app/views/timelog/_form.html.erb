@@ -1,0 +1,56 @@
+<%= error_messages_for 'time_entry' %>
+<%= back_url_hidden_field_tag %>
+
+<div class="box tabular">
+  <% if @time_entry.new_record? %>
+    <% if params[:project_id] %>
+      <%= hidden_field_tag 'project_id', params[:project_id] %>
+    <% elsif params[:issue_id] %>
+      <%= hidden_field_tag 'issue_id', params[:issue_id] %>
+    <% else %>
+      <p><%= f.select :project_id, project_tree_options_for_select(Project.allowed_to(:log_time).to_a, :selected => @time_entry.project, :include_blank => true) %></p>
+    <% end %>
+  <% end %>
+  <p>
+    <%= f.text_field :issue_id, :size => 6 %>
+    <% if @time_entry.issue.try(:visible?) %>
+      <span id="time_entry_issue"><%= "#{@time_entry.issue.tracker.name} ##{@time_entry.issue.id}: #{@time_entry.issue.subject}" %></span>
+    <% end %>
+  </p>
+  <p><%= f.date_field :spent_on, :size => 10, :required => true %><%= calendar_for('time_entry_spent_on') %></p>
+  <p><%= f.text_field :hours, :size => 6, :required => true %></p>
+  <p><%= f.text_field :comments, :size => 100, :maxlength => 1024 %></p>
+  <p><%= f.select :activity_id, activity_collection_for_select_options(@time_entry), :required => true %></p>
+  <p style="color:#007700" ><input id="cbGreen" name="accept" type="radio" value="1" onclick="loadColors(this)"  checked="true" />  Task is in line with your job description and project role.<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspYou believe that you are adding value to you, Zone24x7 and our client by you performing this task.</p>
+  <p style="color:orange"><input id="cbOrange" name="accept" type="radio" value="2" onclick="loadColors(this)" /> 	Task is in line with your job description and project role.<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspYou believe that you are NOT adding value to YOU, but adding value for Zone24x7 and/or our client(s) by you performing this task.</p>
+  <p style="color:#FFCC00"><input id="cbYellow" name="accept" type="radio" value="3" onclick="loadColors(this)" /> 	Task is NOT in line with your job description and project role.<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspYou believe that you are NOT adding value to YOU, but adding value for Zone24x7 and/or our client(s) by you performing this task. </p>
+  <p style="color:red"><input id="cbRed" name="accept" type="radio" value="4" onclick="loadColors(this)"/>  Task is NOT in line with your job description and project role.<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspYou believe that you are not adding value.</p>
+  <% @time_entry.custom_field_values.each do |value| %>
+    <p><%= custom_field_tag_with_label :time_entry, value %></p>
+  <% end %>
+  <%= call_hook(:view_timelog_edit_form_bottom, { :time_entry => @time_entry, :form => f }) %>
+</div>
+
+<%= javascript_tag do %>
+<% if @time_entry.new_record? %>
+  $(document).ready(function(){
+    $('#time_entry_project_id, #time_entry_issue_id').change(function(){
+      $.ajax({
+        url: '<%= escape_javascript new_time_entry_path(:format => 'js') %>',
+        type: 'post',
+        data: $('#new_time_entry').serialize()
+      });
+    });
+  });
+<% end %>
+
+  observeAutocompleteField('time_entry_issue_id', '<%= escape_javascript auto_complete_issues_path(:project_id => @project, :scope => (@project ? nil : 'all'))%>', {
+    select: function(event, ui) {
+      $('#time_entry_issue').text(ui.item.label);
+      $('#time_entry_issue_id').blur();
+    }
+  });
+
+  changeRadioCheck();
+
+<% end %>
