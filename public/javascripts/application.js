@@ -17,19 +17,9 @@ function changeRadioCheck(){
     var selectedIndx=  $("select[id='time_entry_custom_field_values_160'] option:selected").index();
     //id should change according to the relevant custom list
     var radio= document.getElementsByName("accept");
-    //if list index 0 reset it to idex 1
-    if(selectedIndx == 0)
-    {
-        $("#time_entry_custom_field_values_160").prop('selectedIndex',1);
-        $("#cbGreen").prop("checked",true);
-    }
-    else
-    {
-        for(var i = 0; i < radio.length; i++) {
-            if(radio[i].value == selectedIndx) {
-                $("#"+radio[i].id).prop("checked",true);
-
-            }
+    for(var i = 0; i < radio.length; i++) {
+        if(radio[i].value == selectedIndx) {
+            $("#"+radio[i].id).prop("checked",true);
         }
     }
     //set visible false to custom filed and label
