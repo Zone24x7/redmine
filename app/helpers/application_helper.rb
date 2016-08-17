@@ -336,7 +336,7 @@ module ApplicationHelper
   # Renders the project quick-jump box
   def render_project_jump_box
     return unless User.current.logged?
-    projects = User.current.projects.active.select(:id, :name, :identifier, :lft, :rgt).to_a
+    projects = User.current.projects.active.select(:id, :name, :identifier, :lft, :rgt, :status).to_a
     if projects.any?
       options =
         ("<option value=''>#{ l(:label_jump_to_a_project) }</option>" +
@@ -352,6 +352,7 @@ module ApplicationHelper
   end
 
   def project_tree_options_for_select(projects, options = {})
+    external=ExternalUser.new
     s = ''.html_safe
     if blank_text = options[:include_blank]
       if blank_text == true
@@ -360,6 +361,10 @@ module ApplicationHelper
       s << content_tag('option', blank_text, :value => '')
     end
     project_tree(projects) do |project, level|
+      #retrieve project tiletile code only for software engineer external role
+      projectname =external.getexternaluser_project_name(project)
+      project.name=projectname
+
       name_prefix = (level > 0 ? '&nbsp;' * 2 * level + '&#187; ' : '').html_safe
       tag_options = {:value => project.id}
       if project == options[:selected] || (options[:selected].respond_to?(:include?) && options[:selected].include?(project))
