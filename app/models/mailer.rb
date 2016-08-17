@@ -43,7 +43,9 @@ class Mailer < ActionMailer::Base
   def issue_add(issue, to_users, cc_users)
     #change mail subject if the project role is software engineer- external role
     externaluser=ExternalUser.new
-    issue.project.name= externaluser.getexternaluser_project_name(issue.project)
+    if (externaluser.check_if_user_has_external_role(to_users,issue.project)|| externaluser.check_if_user_has_external_role(cc_users,issue.project))
+      issue.project.name= externaluser.external_user_mail_subject(issue.project.name)
+    end
 
     redmine_headers 'Project' => issue.project.identifier,
                     'Issue-Id' => issue.id,
@@ -75,7 +77,9 @@ class Mailer < ActionMailer::Base
 
     #change mail subject if the project role is software engineer- external role
     externaluser=ExternalUser.new
-    issue.project.name= externaluser.getexternaluser_project_name(issue.project)
+    if (externaluser.check_if_user_has_external_role(to_users,issue.project)|| externaluser.check_if_user_has_external_role(cc_users,issue.project))
+      issue.project.name= externaluser.external_user_mail_subject(issue.project.name)
+    end
     redmine_headers 'Project' => issue.project.identifier,
                     'Issue-Id' => issue.id,
                     'Issue-Author' => issue.author.login
@@ -128,7 +132,9 @@ class Mailer < ActionMailer::Base
 
     #change mail subject if the project role is software engineer- external role
     externaluser=ExternalUser.new
-    document.project.name= externaluser.getexternaluser_project_name(document.project)
+    if (externaluser.check_if_user_has_external_role(document.recipients,document.project))
+      document.project.namee= externaluser.external_user_mail_subject(document.project.name)
+    end
     redmine_headers 'Project' => document.project.identifier
     @author = User.current
     @document = document
@@ -164,7 +170,9 @@ class Mailer < ActionMailer::Base
 
     #change mail subject if the project role is software engineer- external role
     externaluser=ExternalUser.new
-    container.project.name= externaluser.getexternaluser_project_name(container.project)
+    if (externaluser.check_if_user_has_external_role(recipients,container.project))
+      container.project.name= externaluser.external_user_mail_subject(container.project.name)
+    end
 
     redmine_headers 'Project' => container.project.identifier
     @attachments = attachments
@@ -183,7 +191,9 @@ class Mailer < ActionMailer::Base
 
     #change mail subject if the project role is software engineer- external role
     externaluser=ExternalUser.new
-    news.project.name= externaluser.getexternaluser_project_name(news.project)
+    if (externaluser.check_if_user_has_external_role(news.recipients,news.project))
+      news.project.name= externaluser.external_user_mail_subject(news.project.name)
+    end
 
     redmine_headers 'Project' => news.project.identifier
     @author = news.author
@@ -206,7 +216,9 @@ class Mailer < ActionMailer::Base
 
     #change mail subject if the project role is software engineer- external role
     externaluser=ExternalUser.new
-    news.project.name= externaluser.getexternaluser_project_name(news.project)
+    if (externaluser.check_if_user_has_external_role(news.recipients,news.project) || externaluser.check_if_user_has_external_role(news.watcher_recipients,news.project) )
+      news.project.name= externaluser.external_user_mail_subject(news.project.name)
+    end
 
     redmine_headers 'Project' => news.project.identifier
     @author = comment.author
@@ -229,7 +241,9 @@ class Mailer < ActionMailer::Base
 
     #change mail subject if the project role is software engineer- external role
     externaluser=ExternalUser.new
-    message.board.project.name= externaluser.getexternaluser_project_name(message.project)
+    if (externaluser.check_if_user_has_external_role(message.recipients,message.board.project) || externaluser.check_if_user_has_external_role((message.root.watcher_recipients + message.board.watcher_recipients).uniq,message.board.project))
+      message.board.project.name= externaluser.external_user_mail_subject(message.board.project.name)
+    end
 
     redmine_headers 'Project' => message.project.identifier,
                     'Topic-Id' => (message.parent_id || message.id)
@@ -254,7 +268,9 @@ class Mailer < ActionMailer::Base
 
     #change mail subject if the project role is software engineer- external role
     externaluser=ExternalUser.new
-    wiki_content.project.name= externaluser.getexternaluser_project_name(wiki_content.project)
+    if (externaluser.check_if_user_has_external_role(wiki_content.recipients,wiki_content.project) || externaluser.check_if_user_has_external_role(wiki_content.page.wiki.watcher_recipients,wiki_content.project))
+      wiki_content.project.name= externaluser.external_user_mail_subject(wiki_content.project.name)
+    end
 
     redmine_headers 'Project' => wiki_content.project.identifier,
                     'Wiki-Page-Id' => wiki_content.page.id
@@ -280,7 +296,9 @@ class Mailer < ActionMailer::Base
 
     #change mail subject if the project role is software engineer- external role
     externaluser=ExternalUser.new
-    wiki_content.project.name= externaluser.getexternaluser_project_name(wiki_content.project)
+    if (externaluser.check_if_user_has_external_role(wiki_content.recipients,wiki_content.project) || externaluser.check_if_user_has_external_role(wiki_content.page.wiki.watcher_recipients,wiki_content.project))
+      wiki_content.project.name= externaluser.external_user_mail_subject(wiki_content.project.name)
+    end
 
     redmine_headers 'Project' => wiki_content.project.identifier,
                     'Wiki-Page-Id' => wiki_content.page.id

@@ -12,6 +12,37 @@ class ExternalUser
       end
     else
       return existingproject.name
+
     end
   end
+
+  #check if a user has software engineer external role within a user list
+  def check_if_user_has_external_role(userlist,selectedproject)
+
+    isexternaluser=false
+    role=Role.find_by_id(27)
+    userlist.each do |mail_user|
+
+      if (mail_user.roles_for_project(selectedproject).include?role)
+        isexternaluser=true
+        break
+      else
+        isexternaluser=false
+      end
+
+    end
+    return isexternaluser
+
+  end
+
+
+  def external_user_mail_subject(projectname)
+    testresult= projectname.scan(/\[([^\]]*)\]/)[-1]
+    if testresult!=nil
+      return testresult[0]
+    else
+      return projectname
+    end
+  end
+
 end
