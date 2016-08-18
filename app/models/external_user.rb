@@ -18,21 +18,24 @@ class ExternalUser
 
   #check if a user has software engineer external role within a user list
   def check_if_user_has_external_role(userlist,selectedproject)
+    begin
+      isexternaluser=false
+      role=Role.find_by_id(27)
+      userlist.each do |mail_user|
 
-    isexternaluser=false
-    role=Role.find_by_id(27)
-    userlist.each do |mail_user|
+        if (mail_user.roles_for_project(selectedproject).include?role)
+          isexternaluser=true
+          break
+        else
+          isexternaluser=false
+        end
 
-      if (mail_user.roles_for_project(selectedproject).include?role)
-        isexternaluser=true
-        break
-      else
-        isexternaluser=false
       end
-
+      return isexternaluser
+    rescue Exception=>e
+    else
+      return false
     end
-    return isexternaluser
-
   end
 
 
