@@ -807,8 +807,70 @@ function keepAnchorOnSignIn(form){
   return true;
 }
 
+/*Added for PSR issue template*/
+function template()
+{
+    $($($('iframe')[0])[0]).contents().find('#radioGreen').click(function()
+    {
+        $($($('iframe')[0])[0]).contents().find('#txtGreen').css("background-color", "#00FF66");
+        $($($('iframe')[0])[0]).contents().find('#txtYellow').css("background-color", "snow");
+        $($($('iframe')[0])[0]).contents().find('#txtRed').css("background-color", "snow");
+        $($($('iframe')[0])[0]).contents().find('#radioYellow').prop('checked',false);
+        $($($('iframe')[0])[0]).contents().find('#radioRed').prop('checked',false);
+    });
+
+    $($($('iframe')[0])[0]).contents().find('#radioYellow').click(function()
+    {   $($($('iframe')[0])[0]).contents().find('#txtYellow').css("background-color", "#FFFF33");
+        $($($('iframe')[0])[0]).contents().find('#txtGreen').css("background-color", "snow");
+        $($($('iframe')[0])[0]).contents().find('#txtRed').css("background-color", "snow");
+        $($($('iframe')[0])[0]).contents().find('#radioRed').prop('checked',false);
+        $($($('iframe')[0])[0]).contents().find('#radioGreen').prop('checked',false);
+    });
+
+    $($($('iframe')[0])[0]).contents().find('#radioRed').click(function()
+    {   $($($('iframe')[0])[0]).contents().find('#txtRed').css("background-color", "#F44147");
+        $($($('iframe')[0])[0]).contents().find('#txtYellow').css("background-color", "snow");
+        $($($('iframe')[0])[0]).contents().find('#txtGreen').css("background-color", "snow");
+        $($($('iframe')[0])[0]).contents().find('#radioYellow').prop('checked',false);
+        $($($('iframe')[0])[0]).contents().find('#radio').prop('checked',false);
+    });
+
+    $($($('iframe')[0])[0]).contents().find('#radioWeekly').click(function()
+    {
+        $($($('iframe')[0])[0]).contents().find('#tdWeekly').css("background-color", "#B8B8B8");
+        $($($('iframe')[0])[0]).contents().find('#tdYearly').css("background-color", "snow");
+        $($($('iframe')[0])[0]).contents().find('#tdMonthly').css("background-color", "snow");
+        $($($('iframe')[0])[0]).contents().find('#radioMonthly').prop('checked',false);
+        $($($('iframe')[0])[0]).contents().find('#radioYearly').prop('checked',false);
+    });
+
+    $($($('iframe')[0])[0]).contents().find('#radioMonthly').click(function()
+    {   $($($('iframe')[0])[0]).contents().find('#tdWeekly').css("background-color", "snow");
+        $($($('iframe')[0])[0]).contents().find('#tdYearly').css("background-color", "snow");
+        $($($('iframe')[0])[0]).contents().find('#tdMonthly').css("background-color", "#B8B8B8 ");
+        $($($('iframe')[0])[0]).contents().find('#radioWeekly').prop('checked',false);
+        $($($('iframe')[0])[0]).contents().find('#radioYearly').prop('checked',false);
+    });
+
+    $($($('iframe')[0])[0]).contents().find('#radioYearly').click(function()
+    {   $($($('iframe')[0])[0]).contents().find('#tdWeekly').css("background-color", "snow");
+        $($($('iframe')[0])[0]).contents().find('#tdYearly').css("background-color", "#B8B8B8 ");
+        $($($('iframe')[0])[0]).contents().find('#tdMonthly').css("background-color", "snow");
+        $($($('iframe')[0])[0]).contents().find('#radioMonthly').prop('checked',false);
+        $($($('iframe')[0])[0]).contents().find('#radioWeekly').prop('checked',false);
+    });
+
+}
+/*added for new PSR template*/
+ function templateNew()
+ {
+   $('#issue_template').change(function(){setTimeout(function(){template()},1000);});
+ }
+
 $(document).ready(setupAjaxIndicator);
 $(document).ready(hideOnLoad);
 $(document).ready(addFormObserversForDoubleSubmit);
 $(document).ready(defaultFocus);
 $(document).ready(setupTabs);
+$(document).ready(templateNew);
+
