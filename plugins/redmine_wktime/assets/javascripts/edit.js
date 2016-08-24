@@ -186,6 +186,9 @@ $(document).ready(function() {
         }
     });
 
+    //call loadSelect2Dropdown function to display select2 dropdown
+    loadSelect2Dropdown();
+
 	if(showWorkHeader) {
 		//when initially load the page hidden the clock in Clock out button
 		var imgend,imghide,imgstart;
@@ -939,6 +942,8 @@ function renameOnChange(child, index, newIndex){
 		}
 		
 	}
+
+    loadSelect2Dropdown();
 }
 
 function validateTotal(hourField, day, maxHour){
@@ -1790,6 +1795,17 @@ function loadRequiredFields(){
                 var required_field = $(this).find("label").attr('for');
                 requiredFields.push(required_field);
             }
+        }
+    });
+}
+
+// implement jquery select2 functionality for Project and issues
+function loadSelect2Dropdown() {
+    $("table#issueTable select").each(function(index) {
+        var selectListId = $(this).attr("id");
+        // implement jquery select2 function for Projects dropdown list and  Issues dropdown list
+        if(selectListId=='time_entry__project_id'||selectListId=='time_entry__issue_id') {
+            $(this).select2();
         }
     });
 }

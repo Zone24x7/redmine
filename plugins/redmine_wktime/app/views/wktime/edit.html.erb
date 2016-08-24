@@ -2,7 +2,11 @@
 
 
   <%= javascript_include_tag 'edit', :plugin => "redmine_wktime" %>
- 
+
+ <%= stylesheet_link_tag 'select2.css', :plugin => 'redmine_wktime' %>
+
+ <%= javascript_include_tag 'select2.js', :plugin => 'redmine_wktime' %>
+
 	<script type="text/javascript"> 
 		lblPleaseSelect = '<%=l(:actionview_instancetag_blank_option) %>'
 		lblWarnUnsavedTE = '<%=l(:text_warn_on_leaving_unsaved) %>'
