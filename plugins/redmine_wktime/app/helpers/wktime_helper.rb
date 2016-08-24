@@ -906,5 +906,11 @@ end
 		rescue
 			'$'
 		end
-	end
+  end
+
+  # options_for_issue_status to get all the status list
+  def options_for_issue_status
+    @issue_status = IssueStatus.all
+    @issue_status
+  end
 end

@@ -910,7 +910,27 @@ include QueriesHelper
 			totalBT = (totalBT/60.0)
 		end		
 		totalBT
-	end
+  end
+
+  # getIssueDetails to get issue details using issueId
+  def getIssueDetails
+
+    issueId = params[:issue_id]
+    issue  = Issue.find_by_id(issueId)
+
+    issueStatus = IssueStatus.find_by_id(issue.status_id)
+
+    actStr =""
+
+    done_ratio = issue.done_ratio
+    done_ratio = done_ratio.to_s() << ' %'
+
+    actStr << issueStatus.name+ '|' + done_ratio.to_s()
+
+    respond_to do |format|
+      format.text { render :text => actStr }
+    end
+  end
 	
 private
 	
@@ -1084,11 +1104,16 @@ private
 		@teEntrydisabled=false
 		unless entryHash.nil?
 			entryHash.each_with_index do |entry, i|
+        			selected_status ="";
+        			selected_done_ratio = "";
+
 				if !entry['project_id'].blank?
 					hours = params['hours' + (i+1).to_s()]					
 					ids = params['ids' + (i+1).to_s()]
 					comments = params['comments' + (i+1).to_s()]
 					disabled = params['disabled' + (i+1).to_s()]
+          				status =  params['status' + (i+1).to_s()]
+          				done_ratio =  params['done_ratio' + (i+1).to_s()]
 					@wkvalidEntry=true	
 					if use_detail_popup
 						custom_values.clear
@@ -1101,6 +1126,8 @@ private
 					ids.each_with_index do |id, k|
 						if disabled[k] == "false"
 							if(!id.blank? || !hours[j].blank?)
+                						selected_status = status[k];
+                						selected_done_ratio = done_ratio[k];
 								teEntry = nil
 								teEntry = getTEEntry(id)									
 								teEntry.attributes = entry
@@ -1120,6 +1147,8 @@ private
 								teEntry.hours = hours[j].blank? ? nil : hours[j]#.to_f
 								
 								unless custom_fields.blank?
+                  							task_status = "";
+                  							complete_percentage = ""
 									teEntry.custom_field_values.each do |custom_value|
 										custom_field = custom_value.custom_field
 
@@ -1143,7 +1172,23 @@ private
 						else
 							@teEntrydisabled=true
 						end			
-					end
+          end
+          taskId="";
+          unless entry['issue_id'].nil?
+            taskId = entry['issue_id'];
+          end
+          unless selected_status.nil? && selected_done_ratio.nil && taskId.nil?
+
+            # remove '%' from % Done custom value before storing into database because it accepts only integers
+            selected_done_ratio = selected_done_ratio.tr('%','')
+
+            #execute query to update status and % Done from popup window to issue table
+            @issue_status = IssueStatus.find_by_name(selected_status);
+            if !@issue_status.nil?
+              Issue.where(:id => taskId).update_all(:status_id => @issue_status.id,
+                                                    :done_ratio => selected_done_ratio)
+            end
+          end
 				end
 			end
 		end

@@ -57,7 +57,25 @@
 			<textarea name="_edit_comments_" id="_edit_comments_" value="" cols="25" rows="2"> </textarea> </p>
 		<% end %>
 
-		
+        	<%
+           		# get all the issue status
+            		status_list = options_for_issue_status
+        	%>
+        	<label for='issue_status'><%= l(:field_status) %></label>
+        	<% if status_list.nil?%>
+            		<%= select_tag 'issue[status]', '<option value="0">Select</option>'.html_safe %>
+        	<% else %>
+            	<p>
+               		<%= select_tag 'issue[status]', options_for_select(status_list.collect{|a|[a.name, a.id]}) %>
+            	</p>
+        	<% end %>
+
+        	<p>
+            		<label for='issue_done_ratio'><%= l(:field_done_ratio) %></label>
+            		<%= select_tag 'issue[done_ratio]', options_for_select((0..10).to_a.collect {|r| ["#{r*10} %", r*10] }) %>
+        	</p>
+
+
 		<% if !Setting.plugin_redmine_wktime['wktime_use_detail_popup'].blank? &&
 			Setting.plugin_redmine_wktime['wktime_use_detail_popup'].to_i == 1 %>
 					

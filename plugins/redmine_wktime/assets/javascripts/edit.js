@@ -98,7 +98,17 @@ $(document).ready(function() {
 					var custFldToolTip;
 					if(!commentInRow){
 						comments[comment_col-1].value = e_comments.val();	
-					}					
+					}
+
+                    			var selected_status = $("#issue_status option:selected").text();
+                    			var selected_ratio = $("#issue_done_ratio option:selected").text();
+
+                    			var status = $('input[name="status'+comment_row+'[]"]');
+                    			status[comment_col-1].value = selected_status;
+
+                    			var done_ratio = $('input[name="done_ratio'+comment_row+'[]"]');
+                    			done_ratio[comment_col-1].value = selected_ratio;
+
 					updateCustomField();					
 					custFldToolTip = getCustFldToolTip();
 					if(	!commentInRow && e_comments.val() != "")
@@ -304,7 +314,21 @@ function showComment(row, col) {
 	}
 	$( "#_edit_comm_act_" ).html(actDropdowns[i].selectedIndex >= 0 ?
 		(actDropdowns[i].options[actDropdowns[i].selectedIndex].value == -1 ? '' : actDropdowns[i].options[actDropdowns[i].selectedIndex].text) : '');
-	
+
+    	var status = $('input[name="status'+row+'[]"]');
+    	status = status[col-1].value;
+
+    	var done_ratio = $('input[name="done_ratio'+row+'[]"]');
+    	done_ratio = done_ratio[col-1].value;
+
+    	$("#issue_status option").filter(function() {
+        	return this.text == status;
+    	}).attr('selected', true);
+
+    	$("#issue_done_ratio option").filter(function() {
+        	return this.text == done_ratio;
+    	}).attr('selected', true);
+
 	showCustomField();		
 	
 	posX = $(currImage).offset().left - $(document).scrollLeft() - width + $(currImage).outerWidth();
@@ -857,7 +881,9 @@ function renameCellIDs(cell, index, newIndex){
 	renameProperty(cell, 'input', 'disabled', index, newIndex);
 	renameProperty(cell, 'input', 'comments', index, newIndex);
 	renameProperty(cell, 'img', 'custfield_img', index, newIndex);
-	
+    	renameProperty(cell, 'input', 'status', index, newIndex);
+    	renameProperty(cell, 'input', 'done_ratio', index, newIndex);
+
 	if(cf_ids != ''){
 		var cust_fids = cf_ids.split(',');
 		var i, j, cust_field, custom_fields;
@@ -1808,4 +1834,44 @@ function loadSelect2Dropdown() {
             $(this).select2();
         }
     });
+}
+
+// implement  onIssueChanged method to apply status and % Done to every column of a row when change the issue in issue dropdown list
+function onIssueChanged(issueDropdown, row) {
+
+    var issueId = issueDropdown.options[issueDropdown.selectedIndex];
+    $this = $(this);
+    if(row===0){
+        var tdColumn = $(issueDropdown).closest('tr').children('td.hours');
+        var row = $(tdColumn).children('input').first().attr('id');
+        row = row.replace("hours","");
+        row = row.replace("_","");
+    }
+    if(issueId!=undefined){
+        issueId = issueDropdown.options[issueDropdown.selectedIndex].value;
+
+        //get the url for ajax call
+        var issUrl = document.getElementById("getissuedetails_url").value;
+
+        var fmt = 'text';
+
+        // ajax call to get issue status and % done
+        $.ajax({
+            url: issUrl,
+            type: 'get',
+            data: {issue_id: issueId, format:fmt},
+            success: function(data){
+                var response = data.split('|');
+                var status = response[0];
+                var done_ratio = response[1];
+
+                $('input[name="status'+row+'[]"]').val(status);
+                $('input[name="done_ratio'+row+'[]"]').val(done_ratio);
+
+
+            } ,
+            beforeSend: function(){ $this.addClass('ajax-loading'); },
+            complete: function(){ $this.removeClass('ajax-loading'); }
+        });
+    }
 }

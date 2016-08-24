@@ -30,6 +30,26 @@ currencySym = ""
 	weeklyHash.each do |key, matrix|
 		matrix.each do |rows|
 			issueWritten = false
+            		issueId =0
+            		test = rows
+            		test.each.with_index do |time_entry, j|
+              			if !time_entry.blank?
+                			issueId = time_entry.issue_id
+              			end
+            		end
+            		@issue = nil
+            		unless issueId.nil? || issueId == 0
+              			@issue = Issue.find(issueId )
+            		end
+            		@status =''
+            		@completed = ''
+            		unless @issue.nil?
+              			issueStatus = IssueStatus.find(@issue.status_id)
+              			unless issueStatus.nil?
+                			@status = issueStatus.name
+              			end
+              			@completed = @issue.done_ratio.to_s << ' %'
+            		end
 			rows.each.with_index do |entry, i|
 %>
 
