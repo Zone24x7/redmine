@@ -24,9 +24,13 @@ var rowid;
 var clktot;
 var addval = new Array();
 var totalBreakTime = 0;
+var requiredFields = [];
 $(document).ready(function() {
 	var e_comments = $( "#_edit_comments_" );
 	var e_notes = $( "#_edit_notes_" );
+
+        loadRequiredFields();
+
 	 $( "#clockInOut-dlg" ).dialog({
 		autoOpen: false,
 		modal: false,
@@ -144,8 +148,44 @@ $(document).ready(function() {
 				$( this ).dialog( "close" );
 			}
 		}
-	});	
-	
+	});
+
+    $("#wktime_save").click(function(event){
+        var row =0;
+        var error = false;
+        $('#issueTable > tbody  > tr ').each(function() {
+            row = row+1;
+            $(this).find('td.hours').each(function(){
+                var hour_input_val = $(this).find(" #hours"+row+"_").val();
+                if(hour_input_val>0){
+                    $(this).find(':input').each(function(){
+                        var hour_input_id = $(this).attr('id');
+                        for(var i=0;i<requiredFields.length;i++){
+                            var required_field_id = requiredFields[i]+""+row+"_";
+                            if(hour_input_id.trim()===required_field_id.trim()){
+                                var required_field_value = $(this).val();
+                                if(required_field_value.length<1||required_field_value=='undefined'){
+                                    error = true;
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        if(error){
+            alert("ERROR: Required fields are missing");
+            event.preventDefault(); // browser - don't act!
+
+
+        }else{
+            $('#wktime_edit').bind('ajax:success', function(evt, xhr, status){
+                window.onbeforeunload = null;
+                window.location = "index";
+            });
+        }
+    });
+
 	if(showWorkHeader) {
 		//when initially load the page hidden the clock in Clock out button
 		var imgend,imghide,imgstart;
@@ -1740,4 +1780,16 @@ function newClockInOut(data)
 		
 	}
 	
+}
+
+function loadRequiredFields(){
+    requiredFields =[];
+    $("#comment-dlg p").each(function(index,val) {
+        if ( $(this).children().length > 0 ) {
+            if ($(this).find(".required").length > 0) {
+                var required_field = $(this).find("label").attr('for');
+                requiredFields.push(required_field);
+            }
+        }
+    });
 }

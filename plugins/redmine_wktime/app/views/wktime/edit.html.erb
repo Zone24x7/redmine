@@ -166,7 +166,7 @@
 		
 <%= render :partial => 'row_template' %>
 
-<%= form_tag({:controller => controller.controller_name, :action => 'update'}, :method => :post, :id => 'wktime_edit') do %>
+<%= form_tag({:controller => controller.controller_name, :action => 'update'}, :method => :post, :remote => true, :id => 'wktime_edit') do %>
 
 <h2><%= l(:label_wktime) %></h2>
 <%=h hidden_field_tag('tab', "#{controller_name}") %>
