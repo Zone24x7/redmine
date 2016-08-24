@@ -1,0 +1,182 @@
+# English strings go here for Rails i18n
+en:
+  my_label: "My label"
+  label_wktime: Time
+  label_wk_project_dd_width: Project Dropdown Width
+  label_wk_issue_dd_width: Issue Dropdown Width
+  label_wk_actv_dd_width: Activity Dropdown Width
+  label_wk_restr_max_hour: Enforce Max hour per day
+  label_wk_max_hour_day: Max hour per day
+  label_wk_restr_min_hour: Enforce Min hour per day
+  label_wk_min_hour_day: Min hour per day
+  label_wk_page_width: Page Width
+  label_wk_page_height: Page Height
+  label_wk_margin_top: Top Margin
+  label_wk_margin_bottom: Bottom Margin
+  label_wk_margin_left: Left Margin
+  label_wk_margin_right: Right Margin
+  label_wk_line_space: Line Space
+  label_wk_header_logo: Header Logo
+  label_wk_purchase_order: Purchase Order
+  label_wk_signature: Signature
+  label_wk_submitted_by: Submitted By
+  label_wk_approved_by: Approved By
+  label_wk_enter_issue_id: Enter issue as ID
+  label_wk_work_time_header: Show work time header
+  label_wk_allow_blank_issue: Allow Blank Issue
+  label_wk_enter_comment_in_row: Enter Comment in row
+  label_wk_enter_cf_in_row: Enter Custom Field in row
+  label_wk_use_detail_popup: Use Detail Time Entry Popup
+  label_wk_approval_system: Approval System
+  label_wk_use_approval_system: Use Approval System
+  label_wk_auto_approve: "Auto approve"
+  label_wk_submission_ack: Submission Acknowledgement Text
+  label_wk_reject_reason: Reject Reason
+  label_wk_account_groups: T&E Admin Groups
+
+  label_wk_enter_issue_As: Enter Issue As
+  label_wk_enter_issue_Description: Enter issue as Subject
+  label_wk_own_approve: "Approver Can Approve their own %{value}"
+  label_wk_reject_timesheet: Rejected Time Sheet
+  label_wk_reject_expense: Rejected expense
+  label_wk_submittedon: Submitted on
+  label_wk_rejectedby: Rejected by
+  label_wk_rejectedon: Rejected on
+  label_wk_timesheet_reject: Your time sheet has been rejected
+  label_wk_expense_reject: Your expense has been rejected
+  label_wk_previous_template_week: Number of Weeks to consider for previous week template
+  label_wk_dropdown: Dropdown
+  label_wk_issueid: Issue ID
+  label_start: Start
+  label_end: End
+  label_remaining_hours: Remaining Hours
+  label_warning_wktime_time_entry: "The timesheet for this period is locked, you cannot log time."  
+  label_warning_wktime_issue_tracker: "The tracker of this issue is not allowed for time logging."
+  
+  label_wk_first_day_of_week: First day of week
+  label_wk_prev_week_tip: Previous Week
+  label_wk_next_week_tip: Next Week
+  label_wkexpense: Expense
+  label_te: Time & Expense
+  label_ta: Time & Attendance
+  label_wk_allow_user_filter_tracker: Allow User Filtering by Tracker
+  label_wk_filter_issue_tracker: Filter Issue by Tracker
+  label_wk_currency: Currency
+  label_wk_time: Weekly Time  
+ 
+  label_wkexpense_reports: Expense Report
+  label_spent_expense: Spent Expense
+  label_wk_submission_deadline: Submission Deadline
+  label_wk_nonsub_mail_subject: Non submission time notification
+  label_wk_nonsub_mail_notification: Send email for non submission
+  label_wk_nonsub_mail_message: Non submission email message
+  label_redmine_restart_warning: "Note: Any change to the below settings require redmine restart"
+  label_wk_minutes: Minutes  
+  label_wkexpense_entry_projects: Restrict Expense Entry to these projects
+  
+  label_wk_public_holiday: Public Holidays
+  label_wk_description: Description 
+  label_wk_date_exists: This date already exists
+  label_wk_select_holiday: Please select a holiday
+
+  button_new_wktime: New Timesheet
+  button_continue: Continue
+  button_add_row: Add Row
+  button_new_wkexpense: New Expensesheet  
+  
+  button_wk_unsubmit: Unsubmit
+  button_save_continue: Save and continue
+  button_wk_approve: Approve
+  button_wk_reject: Reject
+  button_wk_unapprove: Unapprove
+  chkbox_prev_tmpl: Previous Week's Template
+  chkbox_closed_issues: Include Previous Weeks' Closed Issues
+  
+  error_te_save_failed: "Could not save %{label}: %{error}"
+  error_wktime_save_nothing: Nothing to Save
+  error_not_permitted_save: Not permitted to Save
+  
+  wk_status_new: New
+  wk_status_empty: Empty
+  wk_status_submitted: Submitted
+  wk_status_approved: Approved
+  wk_status_rejected: Rejected
+  
+  text_start_of_week_confirmation: "Are you Sure? Status will be lost on the previously submitted %{value}"
+  text_wk_warning_min_hour: "You have not entered the Minimum hours (%{value}) required per day"
+  text_wk_warning_max_hour: "You have entered hours above Maximum hours (%{value}) allowed per day"
+  field_amount: Amount
+  field_status_modified_by: "Modified by"
+  
+
+  label_wk_allow_filter_issue: Allow User filtering to My Issues
+  label_wk_no_user_current_project: no users in selected project
+ 
+  permission_approve_time_entries: Approve time logs
+  field_currency: Currency
+  error_project_issue_associate: Cannot be deleted because time/expense entries associated
+  error_time_entry_delete: "Cannot be deleted. The timesheet with this entry is locked"
+  
+  label_user_filters: User filters
+  label_submitted_by: Submitted by
+  label_approved_by:  Approved by
+  
+  label_wk_reminder: Send Reminder
+  label_wk_reminder_notes: Reminder Notes
+  label_wk_sub_reminder: Send submission email reminder
+  label_wk_appr_reminder: Send approval email reminder
+  wk_submission_reminder: "%{value} submission reminder"
+  wk_sub_reminder_text: "This is a reminder to submit your %{value} for"
+  wk_approval_reminder: "%{value} approval reminder"
+  wk_appr_reminder_text: "This is a reminder to approve %{value}s for:"
+  wk_sub_confirmation_text: "%{value} submission reminder sent to:"
+  wk_appr_confirmation_text: "%{value} approval reminder sent to:"
+  label_wk_timesheet: Timesheet
+  label_wk_expensesheet: Expensesheet
+  text_wk_no_reminder: No reminders to send
+  
+  
+  label_wk_attendance: Attendance
+  label_wk_break_time: Break Time
+  label_wk_enable_clock_in_out: Enable Clock In / Clock Out
+  label_wk_sick_leave_accrual: Sick Leave Accrual
+  label_wk_paid_leave_accrual: Paid Leave Accrual
+  label_wk_leave_accrual_after: Accrual after
+  label_wk_select_break_time: Please select a break time
+  label_hours_per_month: hour(s)/month
+  label_wk_sick_leave: Sick Leave
+  label_wk_holiday: Holiday
+  label_wk_paid_leave: Paid Leave
+  label_wk_leave: Leave
+  label_wk_leave_issue: Leave issue
+  label_wk_leave_accrual: Accrual
+  label_wk_leave_accrual_on: Accrual on
+  label_wk_attendance_start_date: Attendance start date
+  label_clock_in: Clock in
+  label_clock_out: Clock out
+  label_wk_leave_exists: This leave already exists
+  wk_field_balance: Balance
+  wk_field_used: Used
+  wk_field_remaining: Remaining
+  label_wk_leave_short_name: Short name
+  label_difference: Differences
+  label_grand_total:  Total Hours
+  label_wk_attn_join_date:  Joining date
+  label_wk_attn_user_dob:  Date of birth
+  label_wk_designation:  Designation
+  label_employee_id:  Employee Id
+  label_leave_beginning_of_mnth:  Leave Credit at the Beginning of the Month
+  label_leave_during_mnth:  Leave Availed During the Month
+  label_daily_workdone_inclede_ot:  Daily Hours of Work done including Overtime(If any)
+  label_total_hours_ot:  Total hours of Over-time worked
+  label_total_hours_during_mnth:  Total hours of work done during the month
+  label_total_no_of_maternity_leave:  Total no. Of days Maternity leave availed
+  label_attn_sl_no:  Sl. No.
+  wk_label_opening: Opening
+  wk_label_closing: Closing
+  label_wk_default_work_time: Default work time
+  label_wk_attn_for: For
+  label_wk_form_q: FORM-Q
+  label_wk_register_for_shops: REGISTER OF EMPLOYMENT FOR SHOPS AND ESTABLISHMENTS
+  label_wk_name_address: Name and Address of the Establishment
+  label_date_of_entry_into_service: Date of entry into service
