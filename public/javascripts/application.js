@@ -864,7 +864,8 @@ function template()
 /*added for new PSR template*/
  function templateNew()
  {
-   $('#issue_template').change(function(){setTimeout(function(){template()},1000);});
+     /*$('#issue_template').change(function(){setTimeout(function(){template()},1000);});  */
+     setTimeout(function(){template()},1000);
  }
 
 $(document).ready(setupAjaxIndicator);
@@ -872,5 +873,3 @@ $(document).ready(hideOnLoad);
 $(document).ready(addFormObserversForDoubleSubmit);
 $(document).ready(defaultFocus);
 $(document).ready(setupTabs);
-$(document).ready(templateNew);
-

@@ -1,4 +1,4 @@
-gem 'rich', git: 'https://github.com/a-ono/rich.git'
+gem 'rich'
 gem 'kaminari'
 gem 'htmlentities'
 gem 'paperclip', '~> 4.2.1'
