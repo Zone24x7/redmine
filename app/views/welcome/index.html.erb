@@ -1,10 +1,13 @@
 <h2><%= l(:label_home) %></h2>
 <% userrole =CheckRole.new %>
 <div class="splitcontentleft">
-    <div class="wiki">
-        <%= textilizable Setting.welcome_text %>
-    </div>
-    <%= call_hook(:view_welcome_index_left) %>
+    <%if !(userrole.check_external_user(@projects))%>
+        <div class="wiki">
+            <%= textilizable Setting.welcome_text %>
+        </div>
+
+        <%= call_hook(:view_welcome_index_left) %>
+    <%end%>
 </div>
 
 <div class="splitcontentright">
