@@ -4,3 +4,6 @@
 .lbl-txt-align{text-align:left !important}
 .clock-textbox{border-style: solid;    border-color: #FF7F50; }
 .clock-todaytextbox{border-style: solid;    border-color: #008000 ;}
+.remaining_hours {
+    display: none;
+}

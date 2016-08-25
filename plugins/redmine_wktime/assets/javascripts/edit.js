@@ -109,6 +109,14 @@ $(document).ready(function() {
                     			var done_ratio = $('input[name="done_ratio'+comment_row+'[]"]');
                     			done_ratio[comment_col-1].value = selected_ratio;
 
+                    var remaining_hours = $('input[name="remaining_hours'+comment_row+'[]"]');
+                    if(remaining_hours.innerHTML!='undefined' && remaining_hours.length!=0){
+                        var selected_remain_hours = $("#issue_remaining_hours").val();
+                        if(selected_remain_hours!==undefined)  {
+                            remaining_hours[comment_col-1].value = selected_remain_hours;
+                        }
+                    }
+
 					updateCustomField();					
 					custFldToolTip = getCustFldToolTip();
 					if(	!commentInRow && e_comments.val() != "")
@@ -328,6 +336,15 @@ function showComment(row, col) {
     	$("#issue_done_ratio option").filter(function() {
         	return this.text == done_ratio;
     	}).attr('selected', true);
+
+    var remaining_hours = $('input[name="remaining_hours'+row+'[]"]');
+    if(remaining_hours.innerHTML!='undefined' && remaining_hours.length!=0){
+        remaining_hours = remaining_hours[col-1].value;
+        $("#issue_remaining_hours").val(remaining_hours);
+        $("p.remaining_hours").css("display", "block");
+    }else{
+        $("p.remaining_hours").css("display", "none");
+    }
 
 	showCustomField();		
 	
@@ -1864,10 +1881,20 @@ function onIssueChanged(issueDropdown, row) {
                 var response = data.split('|');
                 var status = response[0];
                 var done_ratio = response[1];
-
+                var remaining_hours = response[2];
                 $('input[name="status'+row+'[]"]').val(status);
                 $('input[name="done_ratio'+row+'[]"]').val(done_ratio);
-
+                $("#issueTable tr:eq("+row+") td.hours ").find("input.remaining_hours").remove();
+                if(remaining_hours!==undefined){
+                    $("#issueTable tr:eq("+row+") td.hours").each(function(){
+                        var input = jQuery('<input id="remaining_hours'+row+'_" type ="hidden" name="remaining_hours'+row+'[]" class ="remaining_hours">' );
+                        $(this).append(input);
+                    }) ;
+                    $('input[name="remaining_hours'+row+'[]"]').val(remaining_hours);
+                    $("p.remaining_hours").css("display", "block");
+                }else{
+                    $("p.remaining_hours").css("display", "none");
+                }
 
             } ,
             beforeSend: function(){ $this.addClass('ajax-loading'); },

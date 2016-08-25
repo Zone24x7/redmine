@@ -75,6 +75,10 @@
             		<%= select_tag 'issue[done_ratio]', options_for_select((0..10).to_a.collect {|r| ["#{r*10} %", r*10] }) %>
         	</p>
 
+        <p class="remaining_hours">
+            <label for='issue_remaining_hours'><%= l(:label_remaining_hours) %></label>
+            <%= text_field_tag 'issue[remaining_hours]' %>
+        </p>
 
 		<% if !Setting.plugin_redmine_wktime['wktime_use_detail_popup'].blank? &&
 			Setting.plugin_redmine_wktime['wktime_use_detail_popup'].to_i == 1 %>

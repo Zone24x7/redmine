@@ -43,12 +43,21 @@ currencySym = ""
             		end
             		@status =''
             		@completed = ''
+			@remaining_hours = 0
             		unless @issue.nil?
               			issueStatus = IssueStatus.find(@issue.status_id)
               			unless issueStatus.nil?
                 			@status = issueStatus.name
               			end
               			@completed = @issue.done_ratio.to_s << ' %'
+				@plugin_status =  backlogPluginStatus(@issue.project)
+              			if @plugin_status
+                			if @issue.remaining_hours.nil?
+                  				@remaining_hours = 0.0
+                			else
+                  				@remaining_hours = @issue.remaining_hours
+                			end
+              			end
             		end
 			rows.each.with_index do |entry, i|
 %>
@@ -72,6 +81,16 @@ currencySym = ""
 					<% thours[i] += entry.hours unless @prev_template%>
 					<% @total_hours += entry.hours unless @prev_template%>
 					<% currencySym = controller.getUnit(entry) %>
+                <% else %>
+                    <% if !issueWritten %>
+                        <%= render :partial => 'edit_hours', :locals => {:entry => nil, :isTemplate => false,
+                                                                         :padAt => 'end', :padTill => 8}%>
+                    <% end %>
+                    <% # fill the days till the current day %>
+                    <%= render :partial => 'edit_hours', :locals => {:entry => nil, :isTemplate => false,
+                                                                     :padAt => 'begin', :padTill => i+1}%>
+                    <%= render :partial => 'edit_hours', :locals => {:entry => entry, :isTemplate => false,
+                                                                     :padAt => 'begin', :padTill => i+2}%>
 				<% end %>
 			<% end %>
 			<% # write only the firt row for previous week template

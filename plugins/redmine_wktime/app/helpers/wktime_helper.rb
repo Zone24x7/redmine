@@ -328,7 +328,7 @@ module WktimeHelper
 				if hourMatrix.blank?
 					#create a new matrix if not found
 					hourMatrix =  []
-					rows = []
+					rows = Array.new(7)
 					hourMatrix[0] = rows
 					weeklyHash[key] = hourMatrix
 				end
@@ -913,4 +913,26 @@ end
     @issue_status = IssueStatus.all
     @issue_status
   end
+
+  # backlogPluginStatus method to check whether redmine_backlogs plugin is installed in Redmine core.
+  # if redmine_backlogs plugin installed and configured to the project then returned true otherwise returned false
+  def backlogPluginStatus(project)
+    status =false
+    begin
+      #check backlog plugin is installed
+      Setting.plugin_redmine_backlogs
+    rescue
+      status =false
+    else
+      # check backlogs plugin configured in the project
+      value = Backlogs.configured?(project)
+      if value
+        status =true
+      else
+        status =false
+      end
+    end
+    status
+  end
+
 end

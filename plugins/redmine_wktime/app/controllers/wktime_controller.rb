@@ -927,6 +927,17 @@ include QueriesHelper
 
     actStr << issueStatus.name+ '|' + done_ratio.to_s()
 
+    # check redmine_backlogs plugin is installed or not. If redmine_backlogs plugin installed add remaining_hours to response
+    backlog_plugin_status = backlogPluginStatus(issue.project)
+
+    if backlog_plugin_status
+      remaining_hours = issue.remaining_hours
+      if remaining_hours.nil?
+        remaining_hours = 0.0
+      end
+      actStr << '|'+ remaining_hours.to_s()
+    end
+
     respond_to do |format|
       format.text { render :text => actStr }
     end
@@ -1106,7 +1117,7 @@ private
 			entryHash.each_with_index do |entry, i|
         			selected_status ="";
         			selected_done_ratio = "";
-
+				selected_remain_hours = ""
 				if !entry['project_id'].blank?
 					hours = params['hours' + (i+1).to_s()]					
 					ids = params['ids' + (i+1).to_s()]
@@ -1114,6 +1125,7 @@ private
 					disabled = params['disabled' + (i+1).to_s()]
           				status =  params['status' + (i+1).to_s()]
           				done_ratio =  params['done_ratio' + (i+1).to_s()]
+					remaining_hours = params['remaining_hours' + (i+1).to_s()]
 					@wkvalidEntry=true	
 					if use_detail_popup
 						custom_values.clear
@@ -1128,6 +1140,9 @@ private
 							if(!id.blank? || !hours[j].blank?)
                 						selected_status = status[k];
                 						selected_done_ratio = done_ratio[k];
+								if !remaining_hours.nil?
+                  							selected_remain_hours = remaining_hours[k]
+								end
 								teEntry = nil
 								teEntry = getTEEntry(id)									
 								teEntry.attributes = entry
@@ -1185,8 +1200,14 @@ private
             #execute query to update status and % Done from popup window to issue table
             @issue_status = IssueStatus.find_by_name(selected_status);
             if !@issue_status.nil?
-              Issue.where(:id => taskId).update_all(:status_id => @issue_status.id,
-                                                    :done_ratio => selected_done_ratio)
+              if !selected_remain_hours.empty?
+                Issue.where(:id => taskId).update_all(:status_id => @issue_status.id,
+                                                      :done_ratio => selected_done_ratio,
+                                                      :remaining_hours => selected_remain_hours)
+              else
+                Issue.where(:id => taskId).update_all(:status_id => @issue_status.id,
+                                                      :done_ratio => selected_done_ratio)
+              end
             end
           end
 				end
