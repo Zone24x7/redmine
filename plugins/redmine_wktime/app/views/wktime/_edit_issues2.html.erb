@@ -121,26 +121,4 @@ if params[:enter_issue_id].blank?
 <% end %>
 </td>
 
-<%if !Setting.plugin_redmine_wktime['wktime_enter_comment_in_row'].blank? &&
-	Setting.plugin_redmine_wktime['wktime_enter_comment_in_row'].to_i == 1 %>
-	<td class="comments" align="left">
-	<% if @editable %>
-	
-		<%=h text_field_tag(isTemplate ? '__template__time_entry[][comments]' : 'time_entry[][comments]',  
-			 (entry.nil? ? '' : entry.comments),:size => 35)%>
-	<% else %>
-		<%=h entry.nil? ? '' : entry.comments%>
-	<% end %>
-	</td>
-<% end %>
-
-<!-- dropdown for currency -->
-<% if !(controller.getUnitDDHTML).blank? %>
-	<td align="left">
-			<%= render :partial => controller.getUnitDDHTML , :locals => {:entry => entry} %>
-	</td>
-<% end %>
-
-<%= render :partial => controller.getCFInRowHTML , :locals => {:entry => entry, :isTemplate => false }%>
-
 <% @wday_index = 1 %>

@@ -101,7 +101,7 @@
 			<% @wday_index += 1 %>
 		<% end %>
 		<% if padAt == 'end' %>
-			<td align="center">
+			<td align="center" class = "deleteRow">
 			<% if @editable %>
 				<%= link_to image_tag('delete.png'), "javascript:deleteRow(#{@row.to_s}, '#{l(:notice_unable_delete_time_entry)}');",
 						:data => {:confirm => l(:text_are_you_sure)},	# :method => :delete,

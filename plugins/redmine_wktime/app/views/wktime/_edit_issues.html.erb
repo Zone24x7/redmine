@@ -113,20 +113,6 @@ currencySym = ""
 	<td class="project"></td>
 	<td class="issue"></td>
 	<td class="activity"></td>
-	<% if controller.enterCommentInRow %>	
-		<td class="comments"></td>
-	<% end %> <!-- for currency -->
-	<% if !controller.getUnitLabel.blank? %>
-		<td ></td>
-	<% end %>
-	<% if controller.getUnitLabel.blank? %>
-		<% if controller.enterCustomFieldInRow(1) %>
-			<td ></td>
-		<% end %>
-		<% if controller.enterCustomFieldInRow(2) %>
-			<td ></td>
-		<% end %>
-	<% end %>
 	<% thours.each_with_index do |th,i| %>		
 		<td align="center"><%= currencySym %>&nbsp;<span id=<%= "day_total_#{i+1}" %>><%= ("%.2f" % th) %></span></td>
 	<% end %>

@@ -7,3 +7,12 @@
 .remaining_hours {
     display: none;
 }
+td.hours input {
+    width: 35px;
+}
+td.deleteRow {
+    width: 80px;
+}
+td.project {
+   text-align: left ! important;
+}

@@ -6,16 +6,6 @@
 <th align="left" width="<%= Setting.plugin_redmine_wktime['wktime_issue_dd_width'] %>px"><%= l(:field_issue)  %></th>
 <th align="left" width="<%= Setting.plugin_redmine_wktime['wktime_actv_dd_width'] %>px" ><%= l(:field_activity) %></th>
 
-<% if !Setting.plugin_redmine_wktime['wktime_enter_comment_in_row'].blank? &&
-	Setting.plugin_redmine_wktime['wktime_enter_comment_in_row'].to_i == 1 %>
-	<th align="left"><%= l(:field_comments)%></th>
-<% end %>
-
-<!-- For currency -->
-<% if !controller.getUnitLabel.blank? %>
-	<th align="left" ><%= controller.getUnitLabel %></th>
-<% end %>
-<%= render :partial => controller.getCFInRowHeaderHTML %>
 <% startOfWeek = getStartOfWeek %>
 <% for i in 0..6%>
 <!-- Martin Dube contribution: 'start of the week' configuration -->
