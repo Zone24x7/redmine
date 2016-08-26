@@ -293,8 +293,8 @@ function isChanged(elType) {
 
 function showComment(row, col) {
 	var images = $( 'img[name="custfield_img'+row+'[]"]' );
-	var width = 450;
-	var height = 450;
+	var width = 600;
+	var height = 500;
 	var posX = 0;
 	var posY = 0;
 	var i = row - 1;
