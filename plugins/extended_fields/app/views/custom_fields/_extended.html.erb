@@ -20,9 +20,11 @@
   <% end %>
 
 <% end %>
-
-<p><%= form.text_field(:hint, :size => 50) %></p>
-
+<!-- Hint field may contain large values to display.
+     Hence increasing the maximum value to 1000.
+     Original property has been commented here under -->
+<!--<p><#%= form.text_field(:hint, :size => 50) %></p>-->
+<p><%= form.text_field(:hint, :size => 1000) %></p>
 <!-- Rails 3 + jQuery -->
 <% unless defined? observe_field %>
 
