@@ -625,8 +625,13 @@ $.widget("ech.multiselect", {
 	},
 
 	checkAll: function( e ){
-		this._toggleChecked(true);
-		this._trigger('checkAll');
+        if(this.menu.find('input').filter(':checked').length==this.menu.find('input').length){
+            this._toggleChecked(false);
+            this._trigger('checkAll');
+        } else{
+            this._toggleChecked(true);
+            this._trigger('checkAll');
+        }
 	},
 
 	uncheckAll: function(){
