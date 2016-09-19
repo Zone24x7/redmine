@@ -127,5 +127,46 @@ class RbSprintsController < RbApplicationController
     end
     redirect_to :controller => 'rb_master_backlogs', :action => 'show', :project_id => @project
   end
+
+  #spent_hours method to calculate total efforts of a sprint given by users list
+  def spent_hours
+    sprint_id =  params[:sprint_id]
+    users = params[:users]
+    project_id =  params[:project_id]
+    sprint = RbSprint.find_by_id(sprint_id)
+    stories_arr = []
+    stories = []
+
+    #get all stories of a sprint
+    stories_arr = sprint.stories
+
+    # query to get total spent hours of a sprint
+    spent_hours_query = "select sum(te.hours) as hours from issues as i,time_entries as te where i.id = te.issue_id "
+    stories_arr.each do |story|
+      stories << story.id.to_s
+    end
+    if stories.any?
+      stories =  stories.join(',')
+      spent_hours_query += " and i.parent_id in ("+stories+")"
+    end
+
+    # check for selected users list
+    if users.nil?
+      spent_hours_query += " and i.assigned_to_id in (0)"
+    else
+      spent_hours_query += " and i.assigned_to_id in ("+users+")"
+    end
+
+    unless project_id.nil?
+      spent_hours_query += "and i.project_id=#{project_id}"
+    end
+
+    spent_hours = sprint.efforts(spent_hours_query)
+    json_obj =  {:total_hours => spent_hours }
+    respond_to do |format|
+      format.html { render :json => json_obj  }
+    end
+  end
+
  
 end

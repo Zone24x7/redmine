@@ -146,4 +146,19 @@ class RbSprint < Version
             self.id]
       ) #.sort {|a,b| a.closed? == b.closed? ?  a.updated_on <=> b.updated_on : (a.closed? ? 1 : -1) }
   end
+
+  # execute query to get total efforts of a sprint given by users list
+  def efforts(sql_query)
+    total_efforts = 0.0
+    result=  ActiveRecord::Base.connection.execute(sql_query)
+    ActiveRecord::Base.connection.close
+    result.each do |total_hours|
+      unless total_hours[0].nil?
+        total_efforts =  total_hours[0].to_f
+      end
+    end
+
+    total_efforts
+  end
+
 end

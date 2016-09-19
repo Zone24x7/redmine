@@ -147,6 +147,9 @@ else
             :to => 'rb_taskboards#show', :via => [:get]
   rb_match rb, 'projects/:project_id/taskboard',
             :to => 'rb_taskboards#current', :via => [:get]
+
+  rb_match rb, 'sprint/spent_hours',
+             :to => 'rb_sprints#spent_hours', :via => [:get]
   end
 end
 

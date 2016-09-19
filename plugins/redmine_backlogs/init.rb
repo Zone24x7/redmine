@@ -81,7 +81,7 @@ Redmine::Plugin.register :redmine_backlogs do
     permission :configure_backlogs,   { :rb_project_settings => :project_settings }
     permission :view_master_backlog,  {
                                         :rb_master_backlogs  => [:show, :menu, :closed_sprints],
-                                        :rb_sprints          => [:index, :show, :download],
+                                        :rb_sprints          => [:index, :show, :download, :spent_hours],
                                         :rb_hooks_render     => [:view_issues_sidebar],
                                         :rb_wikis            => :show,
                                         :rb_stories          => [:index, :show, :tooltip],

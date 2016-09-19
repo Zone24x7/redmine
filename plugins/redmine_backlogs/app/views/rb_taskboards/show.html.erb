@@ -15,7 +15,8 @@
   <%= stylesheet_link_tag 'jquery/jquery.multiselect.css', :plugin => 'redmine_backlogs' %>
   <%= stylesheet_link_tag 'taskboard.css', :plugin => 'redmine_backlogs', :media => 'print,screen' %>
   <%= stylesheet_link_tag 'taskboard_print.css', :plugin => 'redmine_backlogs', :media => 'print' %>
-
+  <%=h hidden_field_tag('project_id', "#{@project.id}") %>
+  <%=h hidden_field_tag('sprint_id', "#{@sprint.id}") %>
   <script type="text/javascript"
           src="<%= url_for(:controller => 'rb_server_variables',
                            :action => 'sprint', :sprint_id => @sprint.id,
@@ -59,6 +60,7 @@
 
 <%- content_for :view_specific_links do %>
 
+  <span id="sprintspenthours">(<span id="spent_hours"></span> spent <%= l(:label_hours) %>)</span>
   <span id="sprintestimatedhours">(<%= @sprint.estimated_hours.to_f %> estimated <%= l(:label_hours) %>)</span>
   <% if @sprint.has_burndown? %>
     <a id='show_charts'><%= l(:label_burndown) %></a>

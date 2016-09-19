@@ -235,6 +235,8 @@ RB.UserFilter = RB.Object.create({
   updateUI: function() {
     this.updateTasks();
     this.updateStories();
+    this.updateSpentHours();
+
   },
 
   updateTasks: function() {
@@ -283,6 +285,42 @@ RB.UserFilter = RB.Object.create({
       else
         RB.$(this).closest('tr').hide();
     });
-   }
+   },
+
+  //updateSpentHours method to update estimated hours for the selected users/all users
+  updateSpentHours: function(){
+      users_list = new Array();
+      this.el.multiselect("widget").find(":checkbox").each(function(){
+          if(this.checked)   {
+            var userId = $(this).val();
+            if(userId!=='s' && userId!=='c'){
+               users_list.push(userId);
+            }
+          }
+      });
+
+      var project_id  = document.getElementById("project_id").value;
+      var sprint_id  = document.getElementById("sprint_id").value;
+      var url= '/rb/sprint/spent_hours?project_id='+project_id+'&sprint_id='+sprint_id;
+
+      if(users_list.length>0){
+          url = url + '&users='+users_list;
+      }
+      $.ajax({
+          type: 'GET',
+          url: url,
+          dataType: 'json',
+          contentType: 'application/json',
+          beforeSend: function(){ RB.$('body').addClass('loading');  },
+          success:function(result){
+              total_spent_hours =  result.total_hours.toFixed(1);
+              $("#sprintspenthours #spent_hours").text(total_spent_hours);
+              RB.$('body').removeClass('loading');
+          }
+      });
+  }
+
+
 });
+
 
