@@ -7,6 +7,20 @@ module RedmineTags
 
       def controller_issues_bulk_edit_before_save(context = {})
         save_tags_to_issue context, true
+        params = context[:params]
+        if params[:ids].present? && params[:tag_id].present? && params[:tags_action].present?
+          @task_ids = params[:ids]
+          @tag_id = params[:tag_id]
+          @action = params[:tags_action]
+
+          # if action is remove go to remove_tags method else go to update tags method
+          if(@action.eql? "remove")
+            remove_tags(@task_ids,@tag_id)
+          else
+            edit_tags(@task_ids,@tag_id)
+          end
+        end
+
       end
 
       # Issue has an after_save method that calls reload (update_nested_set_attributes)
@@ -36,6 +50,41 @@ module RedmineTags
           end
 
           Issue.remove_unused_tags!
+        end
+      end
+
+      #  remove_tags method to remove tags from task / multiple tasks
+      def remove_tags(task_ids, tag_id )
+
+        #query to remove tags from task / multiple tasks
+        task_ids.each do |task_id|
+          task_id = task_id.to_i
+          remove_tags_query ="delete from taggings where taggable_type='Issue' and context ='tags' and tag_id ="+tag_id+" and taggable_id  = #{task_id}"
+          ActiveRecord::Base.connection.execute(remove_tags_query)
+          ActiveRecord::Base.connection.close
+        end
+      end
+
+      #  edit_tags method to update tags to task / multiple tasks
+      def edit_tags(task_ids,tag_id )
+        #query to add tags to task / multiple tasks
+        task_ids.each do |task_id|
+          task_id = task_id.to_i
+          # check tag already exists for task
+          tag_exist_query = "select count(*) from taggings WHERE taggable_id = #{task_id} and tag_id=#{tag_id} and taggable_type='Issue' and context='tags'"
+          result = ActiveRecord::Base.connection.execute(tag_exist_query)
+          ActiveRecord::Base.connection.close
+          count = -1 # initialize
+          result.each do |row|
+            count = row[0]
+          end
+
+          #add tags to task if tag not exists for a task
+          if count==0
+            add_tags_query ="insert into taggings (tag_id,taggable_id,taggable_type,context) values (#{tag_id},#{task_id},'Issue','tags')"
+            ActiveRecord::Base.connection.execute(add_tags_query)
+            ActiveRecord::Base.connection.close
+          end
         end
       end
     end
