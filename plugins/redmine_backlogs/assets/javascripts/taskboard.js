@@ -185,14 +185,14 @@ RB.Taskboard = RB.Object.create({
 
   newImpediment: function(row){
     var impediment = RB.$('#impediment_template').children().first().clone();
-    row.find(".list").first().prepend(impediment);
+    row.find(".list").first().append(impediment);
     var o = RB.Factory.initialize(RB.Impediment, impediment);
     o.edit();
   },
         
   newTask: function(row){
     var task = RB.$('#task_template').children().first().clone();
-    row.find(".list").first().prepend(task);
+    row.find(".list").first().append(task);
     var o = RB.Factory.initialize(RB.Task, task);
     o.edit();
   },
