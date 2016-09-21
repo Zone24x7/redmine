@@ -67,7 +67,7 @@ class RbTask < Issue
     attribs = rb_safe_attributes(params)
 
     attribs['author_id'] = user_id
-    attribs['tracker_id'] = RbTask.tracker
+    attribs['tracker_id'] = params[:tracker_id]
     attribs['project_id'] = project_id
 
     blocks = params.delete('blocks')

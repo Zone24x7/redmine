@@ -116,6 +116,7 @@ module Backlogs
 
             self.fixed_version = self.story.fixed_version if self.story
             self.start_date = Date.today if self.start_date.blank? && self.status_id != self.tracker.default_status.id
+            self.tracker = Tracker.find(self.tracker_id)
 
           elsif self.is_story? && Backlogs.setting[:set_start_and_duedates_from_sprint]
             if self.fixed_version

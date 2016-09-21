@@ -293,4 +293,25 @@ filter:progid:DXImageTransform.Microsoft.Gradient(Enabled=1,GradientType=0,Start
 #    end
      '' #Rails4 yet another behavior
   end
+
+  #get all the trackers assigned to a project by using project Id
+  def trackers_assigned_to_project(project_id)
+    connection = ActiveRecord::Base.connection
+    results = connection.execute("select trackers.id,trackers.name from projects_trackers,trackers where projects_trackers.project_id= #{project_id}
+                                 and projects_trackers.tracker_id=trackers.id")
+  end
+
+  # get tracker details by using tracker name
+  def getTrackerByName(tracker_name)
+    tracker_name =  tracker_name.to_s
+    tracker = 0
+    unless tracker_name.nil?
+      tracker = Tracker.where(:name => tracker_name).first
+      unless tracker.nil?
+        tracker = tracker.id
+      end
+    end
+    tracker
+  end
+
 end

@@ -121,8 +121,8 @@ RB.Model = RB.Object.create({
       value = ( fieldType=='select' ? field.children('.v').first().text() : RB.$.trim(field.text()) );
 
       // Select default value for select fields if none is already selected
-      if ((fieldType=='select') && input.children("option[selected='selected']") && value == '') {
-    	  value = input.children("option[selected='selected']:first").val();
+      if ((fieldType=='select') && input.children("option[selected='selected']") && (value == '')) {
+        value = input.children("option[selected='selected']:first").val();
       }
 
       input.val(value);

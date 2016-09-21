@@ -88,6 +88,7 @@ en:
   error_taken: "is already in use"
   event_sprint_summary: "%{project}: %{summary}"
   field_assigned_to: "Assigned To"
+  field_task_type: "Task Type"
   field_backlogs_issue_type: "Backlog type"
   field_base: ""
   field_blocks: Blocks

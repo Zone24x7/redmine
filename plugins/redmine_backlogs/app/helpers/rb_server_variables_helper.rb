@@ -9,9 +9,10 @@ module RbServerVariablesHelper
      roles = User.current.admin ? Role.all : User.current.roles_for_project(@project)
      transitions = {:states => {}, :transitions => {} , :default => 1 }
 
-     klass.trackers.each {|tracker_id|
-      tracker = Tracker.find(tracker_id)
-      tracker_id = tracker_id.to_s
+     Tracker.find_each do |tracker_obj|
+        tracker = tracker_obj
+        tracker_id = tracker_obj.id
+        tracker_id = tracker_id.to_s
 
       default_status = tracker.default_status
       transitions[:default] = default_status if default_status
@@ -39,10 +40,10 @@ module RbServerVariablesHelper
 
           allowed.unshift(status_id)
 
-          transitions[:transitions][tracker_id][key][status_id] = allowed.compact.uniq
+            transitions[:transitions][tracker_id][key][status_id] = allowed.compact.uniq
+          }
         }
-      }
-     }
+     end
      transitions
    end
 end
