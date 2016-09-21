@@ -128,8 +128,8 @@ class RbSprintsController < RbApplicationController
     redirect_to :controller => 'rb_master_backlogs', :action => 'show', :project_id => @project
   end
 
-  #spent_hours method to calculate total efforts of a sprint given by users list
-  def spent_hours
+  #sprint_efforts method to calculate total spent hours and estimated hours of a sprint given by users list
+  def sprint_efforts
     sprint_id =  params[:sprint_id]
     users = params[:users]
     project_id =  params[:project_id]
@@ -141,31 +141,65 @@ class RbSprintsController < RbApplicationController
     stories_arr = sprint.stories
 
     # query to get total spent hours of a sprint
-    spent_hours_query = "select sum(te.hours) as hours from issues as i,time_entries as te where i.id = te.issue_id "
+    spent_hours_query = "select sum(te.hours) from issues as i,time_entries as te where i.id = te.issue_id "
+
+    # query to get total estimated hours of a sprint
+    estimated_hours_query = "select sum(i.estimated_hours) from issues as i where"
+
     stories_arr.each do |story|
       stories << story.id.to_s
     end
     if stories.any?
       stories =  stories.join(',')
       spent_hours_query += " and i.parent_id in ("+stories+")"
+      estimated_hours_query += " i.parent_id in ("+stories+") and"
     end
 
     # check for selected users list
     if users.nil?
       spent_hours_query += " and i.assigned_to_id in (0)"
+      estimated_hours_query += " i.assigned_to_id in (0)"
     else
       spent_hours_query += " and i.assigned_to_id in ("+users+")"
+      estimated_hours_query += " i.assigned_to_id in ("+users+")"
     end
 
     unless project_id.nil?
       spent_hours_query += "and i.project_id=#{project_id}"
+      estimated_hours_query += "and i.project_id=#{project_id}"
     end
 
-    spent_hours = sprint.efforts(spent_hours_query)
-    json_obj =  {:total_hours => spent_hours }
+    # call sprint model getEfforts method to get total spent hours based on users list
+    spent_hours_result = sprint.total_efforts(spent_hours_query)
+
+    # assign spent hours
+    spent_efforts = get_efforts(spent_hours_result)
+
+    # call sprint model getEfforts method to get total estimated hours based on users list
+    estimated_hours_result = sprint.total_efforts(estimated_hours_query)
+
+    # assign estimated hours
+    estimated_efforts = get_efforts(estimated_hours_result)
+
+    #json_obj to return response to ajax call
+    json_obj =  {
+        :total_spent_hours => spent_efforts,
+        :total_estimated_hours =>  estimated_efforts
+    }
     respond_to do |format|
       format.html { render :json => json_obj  }
     end
+  end
+
+  # get_efforts method to get total efforts from query result
+  def get_efforts(query_result)
+    total_efforts = 0.0
+    query_result.each do |result|
+      unless result[0].nil?
+        total_efforts =  result[0].to_f
+      end
+    end
+    return total_efforts
   end
 
  

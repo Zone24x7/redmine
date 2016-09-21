@@ -301,7 +301,7 @@ RB.UserFilter = RB.Object.create({
 
       var project_id  = document.getElementById("project_id").value;
       var sprint_id  = document.getElementById("sprint_id").value;
-      var url= '/rb/sprint/spent_hours?project_id='+project_id+'&sprint_id='+sprint_id;
+      var url= '/rb/sprint/efforts?project_id='+project_id+'&sprint_id='+sprint_id;
 
       if(users_list.length>0){
           url = url + '&users='+users_list;
@@ -313,8 +313,10 @@ RB.UserFilter = RB.Object.create({
           contentType: 'application/json',
           beforeSend: function(){ RB.$('body').addClass('loading');  },
           success:function(result){
-              total_spent_hours =  result.total_hours.toFixed(1);
+              total_spent_hours =  result.total_spent_hours.toFixed(1);
+              total_estimated_hours =  result.total_estimated_hours.toFixed(1);
               $("#sprintspenthours #spent_hours").text(total_spent_hours);
+              $("#sprintestimatedhours").text("("+total_estimated_hours +" estimated hours)");
               RB.$('body').removeClass('loading');
           }
       });
