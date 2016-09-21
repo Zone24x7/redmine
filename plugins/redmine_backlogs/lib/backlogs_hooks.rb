@@ -179,11 +179,9 @@ module BacklogsPlugin
             snippet += "#{radio_button_tag('copy_tasks', 'all:' + params[:copy_from], false)} #{l(:rb_label_copy_tasks_all)}</p>"
           end
 
-          if issue.is_task? && !issue.new_record?
-            snippet += "<p><label for='remaining_hours'>#{l(:field_remaining_hours)}</label>"
-            snippet += text_field_tag('remaining_hours', issue.remaining_hours, :size => 3)
-            snippet += '</p>'
-          end
+          snippet += "<p><label for='remaining_hours'>#{l(:field_remaining_hours)}</label>"
+          snippet += text_field_tag('remaining_hours', issue.remaining_hours, :size => 3)
+          snippet += '</p>'
 
           return snippet
         rescue => e
