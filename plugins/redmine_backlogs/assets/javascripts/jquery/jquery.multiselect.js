@@ -314,6 +314,10 @@ $.widget("ech.multiselect", {
 				    label: label,
 				    checked: nodes[0].checked
 				});
+
+                // update tasks, estimated and spent hours in taskboard
+                self._trigger('checkAll');
+
 			})
 			.delegate('label', 'mouseenter.multiselect', function(){
 				if( !$(this).hasClass('ui-state-disabled') ){

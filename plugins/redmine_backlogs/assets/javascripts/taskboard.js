@@ -235,21 +235,26 @@ RB.UserFilter = RB.Object.create({
   updateUI: function() {
     this.updateTasks();
     this.updateStories();
-    this.updateSpentHours();
+    this.updateEfforts();
 
   },
 
   updateTasks: function() {
     var me = this;
+    var showEmptyTasks = this.el.multiselect("widget").find(":checkbox[value='e']").is(':checked');
     RB.$(".task").each(function() {
       var task_ownerid = null;
       try{
         task_ownerid = RB.$(".assigned_to_id .v", this).text();
       } catch(e){ return; }
-      if (!task_ownerid || me.el.multiselect("widget").find(":checkbox[value='"+task_ownerid+"']").is(':checked')) {
-        RB.$(this).show();
-      }else {
-        RB.$(this).hide();
+      if(me.el.multiselect("widget").find(":checkbox[value='"+task_ownerid+"']").is(':checked') ){
+          RB.$(this).show();
+      }else  {
+          if(task_ownerid=='' && showEmptyTasks) {
+              RB.$(this).show();
+          } else{
+              RB.$(this).hide();
+          }
       }
     });
   },
@@ -287,24 +292,32 @@ RB.UserFilter = RB.Object.create({
     });
    },
 
-  //updateSpentHours method to update estimated hours for the selected users/all users
-  updateSpentHours: function(){
+  //updateHours method to update estimated hours and spent hours for the selected users/all users
+  updateEfforts: function(){
       users_list = new Array();
       this.el.multiselect("widget").find(":checkbox").each(function(){
           if(this.checked)   {
             var userId = $(this).val();
-            if(userId!=='s' && userId!=='c'){
+            if(userId!=='s' && userId!=='c' && userId!='e'){
                users_list.push(userId);
             }
           }
       });
 
+      var showEmptyTasks = this.el.multiselect("widget").find(":checkbox[value='e']").is(':checked');
       var project_id  = document.getElementById("project_id").value;
       var sprint_id  = document.getElementById("sprint_id").value;
       var url= '/rb/sprint/efforts?project_id='+project_id+'&sprint_id='+sprint_id;
 
       if(users_list.length>0){
           url = url + '&users='+users_list;
+      }
+
+      // if Unempty tasks checkbox is checked set unempty_tasks parameter value as true else set false
+      if(showEmptyTasks) {
+          url = url+ '&unempty_tasks=yes';
+      }else{
+          url = url+ '&unempty_tasks=no';
       }
       $.ajax({
           type: 'GET',

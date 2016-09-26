@@ -133,6 +133,15 @@ class RbSprintsController < RbApplicationController
     sprint_id =  params[:sprint_id]
     users = params[:users]
     project_id =  params[:project_id]
+    show_empty_tasks = params[:unempty_tasks]
+    empty_tasks_status = false
+
+    if show_empty_tasks == 'yes'
+      empty_tasks_status = true
+    else
+      empty_tasks_status = false
+    end
+
     sprint = RbSprint.find_by_id(sprint_id)
     stories_arr = []
     stories = []
@@ -157,16 +166,29 @@ class RbSprintsController < RbApplicationController
 
     # check for selected users list
     if users.nil?
-      spent_hours_query += " and i.assigned_to_id in (0)"
-      estimated_hours_query += " i.assigned_to_id in (0)"
+      # check whether unempty tasks checkbox is checked
+      if empty_tasks_status
+        spent_hours_query += " and i.assigned_to_id is NULL"
+        estimated_hours_query += " i.assigned_to_id is NULL"
+      else
+        spent_hours_query += " and i.assigned_to_id in (0)"
+        estimated_hours_query += " i.assigned_to_id in (0)"
+      end
+
     else
-      spent_hours_query += " and i.assigned_to_id in ("+users+")"
-      estimated_hours_query += " i.assigned_to_id in ("+users+")"
+      # check whether unempty tasks checkbox is checked
+      if empty_tasks_status
+        spent_hours_query += " and ( i.assigned_to_id in ("+users+") or  i.assigned_to_id is NULL )"
+        estimated_hours_query += " ( i.assigned_to_id in ("+users+") or  i.assigned_to_id is NULL ) "
+      else
+        spent_hours_query += " and i.assigned_to_id in ("+users+")"
+        estimated_hours_query += " i.assigned_to_id in ("+users+")"
+      end
     end
 
     unless project_id.nil?
-      spent_hours_query += "and i.project_id=#{project_id}"
-      estimated_hours_query += "and i.project_id=#{project_id}"
+      spent_hours_query += " and i.project_id=#{project_id}"
+      estimated_hours_query += " and i.project_id=#{project_id}"
     end
 
     # call sprint model getEfforts method to get total spent hours based on users list
