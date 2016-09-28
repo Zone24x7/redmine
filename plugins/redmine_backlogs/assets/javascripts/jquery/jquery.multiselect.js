@@ -396,6 +396,8 @@ $.widget("ech.multiselect", {
 			}
 		});
 
+        $('#refresh').bind('click', function(e){ self.selectAll(e); });
+
 		// deal with form resets.  the problem here is that buttons aren't
 		// restored to their defaultValue prop on form reset, and the reset
 		// handler fires before the form is actually reset.  delaying it a bit
@@ -642,6 +644,11 @@ $.widget("ech.multiselect", {
 		this._toggleChecked(false);
 		this._trigger('uncheckAll');
 	},
+
+    selectAll: function(){
+        this._toggleChecked(true);
+        this._trigger('checkAll');
+    },
 
 	getChecked: function(){
 		return this.menu.find('input').filter(':checked');

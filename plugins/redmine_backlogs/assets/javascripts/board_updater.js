@@ -9,7 +9,6 @@ RB.BoardUpdater = RB.Object.create({
   initialize: function(){
     var self = this;
 
-    RB.$('#refresh').bind('click', function(e,u){ self.handleRefreshClick(e,u); });
     RB.$('#disable_autorefresh').bind('click', function(e,u){ self.handleDisableAutorefreshClick(e,u); });
 
     this.loadPreferences();
