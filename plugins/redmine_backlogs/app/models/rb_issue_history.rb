@@ -342,7 +342,7 @@ class RbIssueHistory < ActiveRecord::Base
       :estimated_hours => _issue.estimated_hours,
       :story_points => _issue.story_points,
       :remaining_hours => _issue.remaining_hours,
-      :tracker => RbIssueHistory.issue_type(_issue.tracker_id),
+      :tracker => RbIssueHistory.get_issue_type(_issue),
       :sprint => _issue.fixed_version_id,
       :release => _issue.release_id,
       :status_id => _issue.status_id,
@@ -369,6 +369,15 @@ class RbIssueHistory < ActiveRecord::Base
     self.history[0][:hours] = self.history[0][:estimated_hours] || self.history[0][:remaining_hours]
 
     raise "init_history failed: #{todo.inspect} => #{self.history.inspect}" unless self.history.size >= 2
+  end
+
+  def self.get_issue_type(issue)
+    return nil if issue.blank?
+    if issue.parent_id.nil?
+      :story
+    else
+      :task
+    end
   end
 
   def touch_sprint
