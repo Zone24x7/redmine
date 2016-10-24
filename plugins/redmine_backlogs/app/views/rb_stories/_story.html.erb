@@ -1,3 +1,4 @@
+<% if story.parent_id.nil? %>
 <li class="model story fff-wrapper <%= mark_if_closed(story) %> tracker<%= story ? story.tracker_id : '' %>" id="<%= story_html_id_or_empty(story) %>">
  <div class="fff-wrapmiddle">
    <div class="story_field fff-middle">
@@ -52,3 +53,4 @@
  </div>
   <div class="clearfix"></div>
 </li>
+<%end %>
