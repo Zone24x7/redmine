@@ -205,7 +205,8 @@ function buildFilterRow(field, operator, values) {
       var option = $('<option>');
       if ($.isArray(filterValue)) {
         option.val(filterValue[1]).text(filterValue[0]);
-        if ($.inArray(filterValue[1], values) > -1) {option.attr('selected', true);}
+        var filter_value =  $.trim(filterValue[1]);
+        if ($.inArray(filter_value, values) > -1) { option.attr('selected', true);}
       } else {
         option.val(filterValue).text(filterValue);
         if ($.inArray(filterValue, values) > -1) {option.attr('selected', true);}
