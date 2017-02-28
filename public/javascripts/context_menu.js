@@ -221,9 +221,24 @@ function contextMenuInit(url) {
 }
 
 function toggleIssuesSelection(el) {
-  var checked = $(this).prop('checked');
-  var boxes = $(this).parents('table').find('input[name=ids\\[\\]]');
-  boxes.prop('checked', checked).parents('tr').toggleClass('context-menu-selection', checked);
+    var boxes = $(el).parents('form').find('input[type=checkbox]');
+    var all_checked = true;
+    boxes.each(function(){ if (!$(this).attr('checked')) { all_checked = false; } });
+    boxes.each(function(){
+        if (all_checked) {
+            $(this).removeAttr('checked');
+            $(this).parents('tr').removeClass('context-menu-selection');
+        } else if (!$(this).attr('checked')) {
+            $(this).attr('checked', true);
+            $(this).parents('tr').addClass('context-menu-selection');
+        }
+    });
+}
+
+function toggle_issuesSelection(el) {
+    var checked = $(this).prop('checked');
+    var boxes = $(this).parents('table').find('input[name=ids\\[\\]]');
+    boxes.prop('checked', checked).parents('tr').toggleClass('context-menu-selection', checked);
 }
 
 function window_size() {
@@ -243,5 +258,5 @@ function window_size() {
 }
 
 $(document).ready(function(){
-  $('input[type=checkbox].toggle-selection').on('change', toggleIssuesSelection);
+  $('input[type=checkbox].toggle-selection').on('change', toggle_issuesSelection);
 });
