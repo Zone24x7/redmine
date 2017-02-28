@@ -191,8 +191,8 @@ $(document).ready(function() {
                 }
             });
         });
-		
-	//check whether activity is selected
+
+        // Display alert message when activity is not selected
         $('select[name="time_entry[][activity_id]"]').each(function (e) {
             var selected_activity =  $(this).find("option:selected").val();
             if(selected_activity<0 || typeof(selected_activity) ==="undefined"){
@@ -200,7 +200,16 @@ $(document).ready(function() {
                 return false;
             }
         });
-		
+
+        // Display alert message when issue is not selected
+        $('select[name="time_entry[][issue_id]"]').each(function(e){
+            var selected_issue =  $(this).find("option:selected").val();
+            if(selected_issue<0 || typeof(selected_issue) ==="undefined"){
+                error = true;
+                return false;
+            }
+        });
+
         if(error){
             alert("ERROR: Required fields are missing");
             event.preventDefault(); // browser - don't act!
