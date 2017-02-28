@@ -191,6 +191,16 @@ $(document).ready(function() {
                 }
             });
         });
+		
+	//check whether activity is selected
+        $('select[name="time_entry[][activity_id]"]').each(function (e) {
+            var selected_activity =  $(this).find("option:selected").val();
+            if(selected_activity<0 || typeof(selected_activity) ==="undefined"){
+                error = true;
+                return false;
+            }
+        });
+		
         if(error){
             alert("ERROR: Required fields are missing");
             event.preventDefault(); // browser - don't act!
