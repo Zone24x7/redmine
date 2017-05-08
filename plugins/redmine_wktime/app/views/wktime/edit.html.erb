@@ -102,10 +102,11 @@
 							else
 								cf_ids += ",_custom_field_values_#{custom_field.id}"
 							end
-				%>
-							<p><%= custom_field_tag_with_label '', custom_value %></p>
-						<% 	end %>
-
+				%>          
+							<% if custom_value.visible? %>
+							  <p><%= custom_field_tag_with_label '', custom_value %></p>
+							<% end %>
+						<% end %>
 				<% 	end %>
 				<script type="text/javascript"> cf_ids = '<%=cf_ids%>';</script>
 			<% end %>
@@ -222,7 +223,9 @@
 							wkcf_ids += ",wktime_custom_field_values_#{custom_field.id}"
 						end
 				%>
-						<tr><th>
+						<tr>
+						<% if custom_value.visible? %>	
+						<th>
 						<% # = custom_field.name %> 
 						<% # Martin Dube Contribution: show required field in Wktime custom field %>
 						<%= custom_field_label_tag "wktime", custom_value %></th>
@@ -232,7 +235,9 @@
 						<% else %>
 							<%=h custom_value.value %>
 						<% end %>
-						</td></tr>
+						</td>
+						<% end %>
+						</tr>
 
 				<% 	end %>
 				<!-- script type="text/javascript"> wkcf_ids = '<%=wkcf_ids%>';</script -->
