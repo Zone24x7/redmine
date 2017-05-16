@@ -795,6 +795,8 @@ function toggleNewObjectDropdown() {
 $(document).ready(function(){
   $('#content').on('change', 'input[data-disables], input[data-enables], input[data-shows]', toggleDisabledOnChange);
   toggleDisabledInit();
+  
+  
 });
 
 function keepAnchorOnSignIn(form){
@@ -868,6 +870,19 @@ function template()
      /*$('#issue_template').change(function(){setTimeout(function(){template()},1000);});  */
      setTimeout(function(){template()},1000);
  }
+ 
+function validateform(){
+
+    var isVisibleChecked = $("input#custom_field_visible").is(':checked');
+    var isRequiredChecked = $("input#custom_field_is_required").is(':checked');
+
+    if(isVisibleChecked=== false && isRequiredChecked === true){
+        alert("Mandatory fields cannot be hidden. Please uncheck the  'Required'  option if you really want to hide this field");
+        return false;
+    } else{
+        return true;
+    }
+}
 
 $(document).ready(setupAjaxIndicator);
 $(document).ready(hideOnLoad);

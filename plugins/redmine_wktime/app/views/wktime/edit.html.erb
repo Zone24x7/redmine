@@ -90,6 +90,7 @@
 				<% 
 					cf_ids = ""
 					@new_custom_field_values.each do |custom_value|
+					  if custom_value.visible?
 						custom_field = custom_value.custom_field
 						#if the custom field is not setup on the row
 						if !((!Setting.plugin_redmine_wktime['wktime_enter_cf_in_row1'].blank? &&
@@ -103,10 +104,10 @@
 								cf_ids += ",_custom_field_values_#{custom_field.id}"
 							end
 				%>          
-							<% if custom_value.visible? %>
+							
 							  <p><%= custom_field_tag_with_label '', custom_value %></p>
-							<% end %>
 						<% end %>
+					 <% end %>
 				<% 	end %>
 				<script type="text/javascript"> cf_ids = '<%=cf_ids%>';</script>
 			<% end %>
@@ -223,6 +224,7 @@
 							wkcf_ids += ",wktime_custom_field_values_#{custom_field.id}"
 						end
 				%>
+			
 						<tr>
 						<% if custom_value.visible? %>	
 						<th>

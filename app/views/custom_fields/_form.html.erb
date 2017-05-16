@@ -19,7 +19,7 @@
 
 <%= call_hook(:view_custom_fields_form_upper_box, :custom_field => @custom_field, :form => f) %>
 </div>
-<p><%= submit_tag l(:button_save) %></p>
+<p><%= submit_tag l(:button_save), :onclick => "return validateform();"  %></p>
 </div>
 
 <div class="splitcontentright">

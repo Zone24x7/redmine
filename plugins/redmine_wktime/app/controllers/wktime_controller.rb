@@ -1162,20 +1162,22 @@ private
 								teEntry.hours = hours[j].blank? ? nil : hours[j]#.to_f
 								
 								unless custom_fields.blank?
-                  							task_status = "";
-                  							complete_percentage = ""
+									task_status = "";
+									complete_percentage = ""
 									teEntry.custom_field_values.each do |custom_value|
+										if custom_value.visible?
 										custom_field = custom_value.custom_field
 
-										#if it is from the row, it should be automatically loaded
-										if !((!Setting.plugin_redmine_wktime['wktime_enter_cf_in_row1'].blank? &&
-											Setting.plugin_redmine_wktime['wktime_enter_cf_in_row1'].to_i == custom_field.id) ||
-											(!Setting.plugin_redmine_wktime['wktime_enter_cf_in_row2'].blank? &&
-											Setting.plugin_redmine_wktime['wktime_enter_cf_in_row2'].to_i == custom_field.id))
-											if use_detail_popup
-												cvs = custom_values[custom_field.id]
-												custom_value.value = cvs[k].blank? ? nil : 
-												custom_field.multiple? ? cvs[k].split(',') : cvs[k]	
+											#if it is from the row, it should be automatically loaded
+											if !((!Setting.plugin_redmine_wktime['wktime_enter_cf_in_row1'].blank? &&
+												Setting.plugin_redmine_wktime['wktime_enter_cf_in_row1'].to_i == custom_field.id) ||
+												(!Setting.plugin_redmine_wktime['wktime_enter_cf_in_row2'].blank? &&
+												Setting.plugin_redmine_wktime['wktime_enter_cf_in_row2'].to_i == custom_field.id))
+												if use_detail_popup
+													cvs = custom_values[custom_field.id]
+													custom_value.value = cvs[k].blank? ? nil : 
+													custom_field.multiple? ? cvs[k].split(',') : cvs[k] 
+												end
 											end
 										end
 									end
@@ -1605,7 +1607,7 @@ private
 		@members = @members.uniq
 	end
 	
-  	def setup
+  def setup
 		teName = getTEName()
 		if api_request? && params[:startday].blank?
 			startday = params[:"wk_#{teName}"][:startday].to_s.to_date
