@@ -1232,15 +1232,17 @@ private
 		custom_fields = WktimeCustomField.all	
 		if !custom_fields.blank? && !cvParams.blank?
 			wktime.custom_field_values.each do |custom_value|
-				custom_field = custom_value.custom_field				
-				cvs = cvParams["#{custom_field.id}"]	
-				if cvs.blank? && custom_field.is_required				
-					errorMsg = "#{custom_field.name} #{l('activerecord.errors.messages.blank')} "
-					break
-				end								
-				custom_value.value = cvs.blank? ? nil : 
-					custom_field.multiple? ? cvs.split(',') : cvs
-			end
+			  if custom_value.visible?
+					custom_field = custom_value.custom_field				
+					cvs = cvParams["#{custom_field.id}"]	
+					if cvs.blank? && custom_field.is_required				
+						errorMsg = "#{custom_field.name} #{l('activerecord.errors.messages.blank')} "
+						break
+					end								
+					custom_value.value = cvs.blank? ? nil : 
+						custom_field.multiple? ? cvs.split(',') : cvs
+			  end
+		  end 
 		end
 		return errorMsg
 	end
