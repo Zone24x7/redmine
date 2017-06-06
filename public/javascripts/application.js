@@ -14,7 +14,7 @@ function toggleCheckboxesBySelector(selector) {
 }
 
 function changeRadioCheck(){
-    var selectedIndx=  $("select[id='time_entry_custom_field_values_160'] option:selected").index();
+    var selectedIndx=  $("select[id='time_entry_custom_field_values_159'] option:selected").index();
     //id should change according to the relevant custom list
     var radio= document.getElementsByName("accept");
     for(var i = 0; i < radio.length; i++) {
@@ -23,8 +23,8 @@ function changeRadioCheck(){
         }
     }
     //set visible false to custom filed and label
-    $($("label[for='"+$('#time_entry_custom_field_values_160').attr('id')+"']")).css('display','none');
-    $('#time_entry_custom_field_values_160').css('display', 'none');
+    $($("label[for='"+$('#time_entry_custom_field_values_159').attr('id')+"']")).css('display','none');
+    $('#time_entry_custom_field_values_159').css('display', 'none');
 }
 
 
@@ -40,7 +40,7 @@ function loadColors(e){
             selectedIndx = radio[i].value;
         }
     }
-    $("#time_entry_custom_field_values_160").prop('selectedIndex',selectedIndx);
+    $("#time_entry_custom_field_values_159").prop('selectedIndex',selectedIndx);
 
 }
 
@@ -795,8 +795,6 @@ function toggleNewObjectDropdown() {
 $(document).ready(function(){
   $('#content').on('change', 'input[data-disables], input[data-enables], input[data-shows]', toggleDisabledOnChange);
   toggleDisabledInit();
-  
-  
 });
 
 function keepAnchorOnSignIn(form){
