@@ -19,7 +19,8 @@ class CustomValue < ActiveRecord::Base
   belongs_to :custom_field
   belongs_to :customized, :polymorphic => true
   attr_protected :id
-
+  before_save :stop_null_value_custom_fields
+  
   def initialize(attributes=nil, *args)
     super
     if new_record? && custom_field && !attributes.key?(:value)
@@ -47,4 +48,12 @@ class CustomValue < ActiveRecord::Base
   def to_s
     value.to_s
   end
+  
+
+  def stop_null_value_custom_fields
+    if value==nil
+       false
+    end
+  end
+
 end
